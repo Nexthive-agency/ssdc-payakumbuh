@@ -1,21 +1,40 @@
+import bgHero from "./assets/image/bg-hero.jpg";
+import overlay from "./assets/image/overlay.png";
+import charSsdc from "./assets/image/char-ssdc.png";
+import logo from "./assets/image/logo.png";
+import bgButton1 from "./assets/image/bg-button1.png";
+import whatsapp from "./assets/image/whatsapp.png";
+import instagram from "./assets/image/instagram.png";
+import disiniTag from "./assets/image/disini-tag.png";
+import qrcode from "./assets/image/qrcode.png";
+import maskot1 from "./assets/image/maskot1.png";
+import maskot2 from "./assets/image/maskot2.png";
+
 export default function Home() {
   return (
     <>
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <img
-          src="/src/assets/image/bg-hero.jpg"
+          src={bgHero}
+          width={1920}
+          height={1080}
           alt="Background Klinik Gigi SSDC Payakumbuh"
           className="absolute inset-0 w-full h-full object-cover object-center -z-30"
         />
         <img
-          src="/src/assets/image/overlay.png"
+          src={overlay}
           alt="Overlay"
+          width={1920}
+          height={1080}
           className="absolute inset-0 w-full h-full object-cover object-center z-10 pointer-events-none select-none opacity-10"
         />
         <div className="absolute bottom-0 left-0 z-20 hidden lg:block lg:w-[50%] xl:w-[50%]">
           <img
-            src="/src/assets/image/char-ssdc.png"
+            src={charSsdc}
             alt="Maskot SSDC Senyum Sehat Dental Care Payakumbuh"
+            width={700}
+            height={900}
+            loading="eager"
             className="object-contain w-full h-auto select-none pointer-events-none"
           />
         </div>
@@ -23,15 +42,21 @@ export default function Home() {
         <div className="relative z-10 w-full">
           <div className="mx-auto max-w-7xl px-6 md:pr-16 pb-24 text-white flex flex-col items-center md:items-end text-center md:text-right space-y-2">
             <img
-              src="/src/assets/image/logo.png"
+              src={logo}
               alt="Logo SSDC Senyum Sehat Dental Care Payakumbuh"
+              width={300}
+              height={80}
+              loading="eager"
               className="w-[300px] h-auto object-contain"
             />
             <div className="relative max-w-md w-full flex justify-center md:justify-end">
               <div className="relative">
                 <img
-                  src="/src/assets/image/bg-button1.png"
+                  src={bgButton1}
                   alt="Text Background"
+                  width={450}
+                  height={80}
+                  loading="eager"
                   className="w-[450px] h-auto object-contain"
                 />
                 <h1 className="absolute inset-0 flex items-center justify-center text-[#6E1A7E] tracking-[-1px] text-lg sm:text-xl lg:text-2xl font-bold text-center opacity-95 drop-shadow-lg">
@@ -53,8 +78,11 @@ export default function Home() {
                 className="transition-transform duration-200 hover:scale-110"
               >
                 <img
-                  src="/src/assets/image/whatsapp.png"
+                  src={whatsapp}
                   alt="Logo WhatsApp resmi SSDC"
+                  width={45}
+                  height={45}
+                  loading="eager"
                   className="w-[45px] h-[45px] object-contain"
                 />
               </a>
@@ -66,8 +94,11 @@ export default function Home() {
                 className="transition-transform duration-200 hover:scale-110"
               >
                 <img
-                  src="/src/assets/image/instagram.png"
+                  src={instagram}
                   alt="Logo Instagram resmi SSDC"
+                  width={45}
+                  height={45}
+                  loading="eager"
                   className="w-[45px] h-[45px] object-contain"
                 />
               </a>
@@ -78,8 +109,10 @@ export default function Home() {
 
       <section className="relative min-h-screen flex flex-col items-center justify-center bg-[#A25BD9]/10 px-6 py-16 overflow-hidden">
         <img
-          src="/src/assets/image/overlay.png"
+          src={overlay}
           alt="Overlay"
+          width={1920}
+          height={1080}
           className="absolute inset-0 w-full h-full object-cover object-center opacity-10 pointer-events-none select-none -z-10"
         />
 
@@ -92,8 +125,9 @@ export default function Home() {
                 </h2>
                 <div className="relative w-[120px] h-[45px] flex items-center justify-center">
                   <img
-                    src="/src/assets/image/disini-tag.png"
+                    src={disiniTag}
                     alt="Tag Disini"
+                    loading="lazy"
                     className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
                   />
                   <span className="relative z-10 text-[#6E1A7E] tracking-[-1px] text-lg sm:text-xl lg:text-2xl font-bold">
@@ -149,8 +183,11 @@ export default function Home() {
 
             <div className="flex flex-col items-center z-10">
               <img
-                src="/src/assets/image/qrcode.png"
+                src={qrcode}
                 alt="QR code menuju halaman ulasan Google SSDC Payakumbuh"
+                width={200}
+                height={200}
+                loading="lazy"
                 className="w-[200px] h-auto object-contain drop-shadow-lg"
               />
               <a
@@ -165,13 +202,19 @@ export default function Home() {
 
             <div className="absolute -bottom-2/12 hidden -left-1 -translate-x-1/2 lg:flex items-end justify-center z-0">
               <img
-                src="/src/assets/image/maskot1.png"
+                src={maskot1}
                 alt="Maskot Dokter Gigi Senyum Sehat Dental Care Payakumbuh"
+                width={180}
+                height={250}
+                loading="lazy"
                 className="object-contain w-[180px] sm:w-[200px] md:w-[150px]"
               />
               <img
-                src="/src/assets/image/maskot2.png"
+                src={maskot2}
                 alt="Maskot Pasien Senang SSDC Dental Care"
+                width={180}
+                height={250}
+                loading="lazy"
                 className="object-contain w-[180px] sm:w-[200px] md:w-[150px]"
               />
             </div>
