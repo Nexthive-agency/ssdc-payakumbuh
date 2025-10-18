@@ -164,13 +164,13 @@ export default function Home() {
               <div className="flex items-center gap-3">
                 <p className="text-2xl md:text-3xl font-bold">untuk</p>
                 <img
-                  src="/src/assets/image/logo.png"
+                  src={logo}
                   alt="Logo SSDC Senyum Sehat Dental Care Payakumbuh"
                   className="w-[120px] h-auto object-contain"
                 />
                 <div className="relative w-[120px] h-[45px] flex items-center justify-center">
                   <img
-                    src="/src/assets/image/disini-tag.png"
+                    src={disiniTag}
                     alt="Tag Disini"
                     className="absolute inset-0 w-full h-full object-cover object-center select-none pointer-events-none"
                   />
