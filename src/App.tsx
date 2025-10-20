@@ -1,6 +1,6 @@
 import bgHero from "./assets/image/bg-hero.jpg";
 import overlay from "./assets/image/overlay.png";
-import charSsdc from "./assets/image/char-ssdc.png";
+// import charSsdc from "./assets/image/char-ssdc.png";
 import logo from "./assets/image/logo.png";
 import bgButton1 from "./assets/image/bg-button1.png";
 import whatsapp from "./assets/image/whatsapp.png";
@@ -9,6 +9,7 @@ import disiniTag from "./assets/image/disini-tag.png";
 import qrcode from "./assets/image/qrcode.png";
 import maskot1 from "./assets/image/maskot1.png";
 import maskot2 from "./assets/image/maskot2.png";
+import keluarga from "./assets/image/keluarga.png";
 
 export default function Home() {
   return (
@@ -30,7 +31,7 @@ export default function Home() {
         />
         <div className="absolute bottom-0 left-0 z-20 hidden lg:block lg:w-[50%] xl:w-[50%]">
           <img
-            src={charSsdc}
+            src={keluarga}
             alt="Maskot SSDC Senyum Sehat Dental Care Payakumbuh"
             width={700}
             height={900}
@@ -68,11 +69,11 @@ export default function Home() {
               Drg. Munadiyah & Partner
             </div>
             <div className="bg-white w-fit h-fit text-[#6E1A7E] px-10 py-2 rounded-full drop-shadow-lg">
-              <p className="font-bold">Daftar Sekarang</p>
+              <a href="https://wa.me/6285121009692"><p className="font-bold">Daftar Sekarang</p></a>
             </div>
             <div className="flex items-center justify-center gap-4 mt-4">
               <a
-                href="https://wa.me/6281234567890"
+                href="https://wa.me/6285121009692"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="transition-transform duration-200 hover:scale-110"
@@ -87,7 +88,7 @@ export default function Home() {
                 />
               </a>
               <a
-                href="https://www.instagram.com/akunmu"
+                href="https://www.instagram.com/doktergigi.payakumbuh/"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Hubungi kami via WhatsApp"
