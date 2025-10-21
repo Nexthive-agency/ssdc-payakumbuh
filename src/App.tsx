@@ -1,17 +1,22 @@
 import bgHero from "./assets/image/bg-hero.jpg";
 import overlay from "./assets/image/overlay.png";
-// import charSsdc from "./assets/image/char-ssdc.png";
 import logo from "./assets/image/logo.png";
 import bgButton1 from "./assets/image/bg-button1.png";
-import whatsapp from "./assets/image/whatsapp.png";
 import instagram from "./assets/image/instagram.png";
 import disiniTag from "./assets/image/disini-tag.png";
 import qrcode from "./assets/image/qrcode.png";
 import maskot1 from "./assets/image/maskot1.png";
 import maskot2 from "./assets/image/maskot2.png";
 import keluarga from "./assets/image/keluarga.png";
+import facebook from "./assets/image/facebook.png";
+import tiktok from "./assets/image/tiktok.png";
 
 export default function Home() {
+  const mapsAddress = "Jl. Pahlawan 86A Sawah Padang, Payakumbuh Selatan";
+  const mapsRouteUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
+    mapsAddress
+  )}`;
+
   return (
     <>
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -69,18 +74,25 @@ export default function Home() {
               Drg. Munadiyah & Partner
             </div>
             <div className="bg-white w-fit h-fit text-[#6E1A7E] px-10 py-2 rounded-full drop-shadow-lg">
-              <a href="https://wa.me/6285121009692"><p className="font-bold">Daftar Sekarang</p></a>
+              <a
+                href="https://wa.me/6285121009692?text=Halo%20SSDC%2C%20saya%20ingin%20mendaftar%20untuk%20konsultasi%2Fperawatan%20gigi.%0AMohon%20informasinya%20mengenai%20jadwal%20dan%20prosedur%20pendaftaran.%0ATerima%20kasih."
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <p className="font-bold">Daftar Sekarang</p>
+              </a>
             </div>
             <div className="flex items-center justify-center gap-4 mt-4">
               <a
-                href="https://wa.me/6285121009692"
+                href="https://www.instagram.com/doktergigi.payakumbuh/"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Instagram SSDC"
                 className="transition-transform duration-200 hover:scale-110"
               >
                 <img
-                  src={whatsapp}
-                  alt="Logo WhatsApp resmi SSDC"
+                  src={instagram}
+                  alt="Logo Instagram resmi SSDC"
                   width={45}
                   height={45}
                   loading="eager"
@@ -88,15 +100,30 @@ export default function Home() {
                 />
               </a>
               <a
-                href="https://www.instagram.com/doktergigi.payakumbuh/"
+                href="https://www.facebook.com/SSDC-Senyum-Sehat-Dental-Care-100063684277732/"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Hubungi kami via WhatsApp"
+                aria-label="Facebook SSDC"
+                className="transition-transform duration-200 hover:scale-110"
+              ><img
+                  src={facebook}
+                  alt="Logo Facebook resmi SSDC"
+                  width={45}
+                  height={45}
+                  loading="eager"
+                  className="w-[45px] h-[45px] object-contain"
+                />
+              </a>
+              <a
+                href="https://www.tiktok.com/@senyumsehatdentalcare" 
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok SSDC"
                 className="transition-transform duration-200 hover:scale-110"
               >
                 <img
-                  src={instagram}
-                  alt="Logo Instagram resmi SSDC"
+                  src={tiktok}
+                  alt="Logo TikTok resmi SSDC"
                   width={45}
                   height={45}
                   loading="eager"
@@ -141,6 +168,19 @@ export default function Home() {
             <p className="mb-4">
               Jl. Pahlawan 86A Sawah Padang, Payakumbuh Selatan
             </p>
+
+            {/* === Tambahan Tombol Rute Google Maps === */}
+            <div className="mb-6 w-full max-w-md mx-auto lg:mx-0">
+              <a
+                href={mapsRouteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block w-full bg-[#6E1A7E] text-white font-bold px-6 py-3 rounded-xl drop-shadow-lg transition-transform duration-200 hover:scale-[1.02] hover:bg-[#52135f] text-lg"
+              >
+                Lihat Rute di Google Maps
+              </a>
+            </div>
+            {/* ======================================== */}
 
             <div className="rounded-2xl overflow-hidden shadow-lg border border-purple-300 w-full max-w-md mx-auto lg:mx-0">
               <iframe
@@ -191,14 +231,17 @@ export default function Home() {
                 loading="lazy"
                 className="w-[200px] h-auto object-contain drop-shadow-lg"
               />
-              <a
-                href="https://g.page/r/CTI8PIVnMXtbEBM/review"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm mt-2 text-center lg:text-end underline hover:text-purple-900"
-              >
-                https://g.page/r/CTI8PIVnMXtbEBM/review
-              </a>
+              {/* Tombol Ulasan */}
+              <div className="mt-4 bg-white w-fit h-fit text-[#6E1A7E] px-10 py-2 rounded-full drop-shadow-lg transition-transform duration-200 hover:scale-105">
+                <a
+                  href="https://g.page/r/CTI8PIVnMXtbEBM/review"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold whitespace-nowrap"
+                >
+                  Berikan Ulasan Disini
+                </a>
+              </div>
             </div>
 
             <div className="absolute -bottom-2/12 hidden -left-1 -translate-x-1/2 lg:flex items-end justify-center z-0">
