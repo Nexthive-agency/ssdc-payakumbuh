@@ -1,14 +1,15 @@
 import bgHero from "./assets/image/bg-hero.jpg";
 import overlay from "./assets/image/overlay.png";
-import charSsdc from "./assets/image/char-ssdc.png";
 import logo from "./assets/image/logo.png";
 import bgButton1 from "./assets/image/bg-button1.png";
-import whatsapp from "./assets/image/whatsapp.png";
 import instagram from "./assets/image/instagram.png";
 import disiniTag from "./assets/image/disini-tag.png";
 import qrcode from "./assets/image/qrcode.png";
 import maskot1 from "./assets/image/maskot1.png";
 import maskot2 from "./assets/image/maskot2.png";
+import keluarga from "./assets/image/keluarga.png";
+import facebook from "./assets/image/facebook.png";
+import tiktok from "./assets/image/tiktok.png";
 
 export default function Home() {
   return (
@@ -30,7 +31,7 @@ export default function Home() {
         />
         <div className="absolute bottom-0 left-0 z-20 hidden lg:block lg:w-[50%] xl:w-[50%]">
           <img
-            src={charSsdc}
+            src={keluarga}
             alt="Maskot SSDC Senyum Sehat Dental Care Payakumbuh"
             width={700}
             height={900}
@@ -68,18 +69,25 @@ export default function Home() {
               Drg. Munadiyah & Partner
             </div>
             <div className="bg-white w-fit h-fit text-[#6E1A7E] px-10 py-2 rounded-full drop-shadow-lg">
-              <p className="font-bold">Daftar Sekarang</p>
+              <a
+                href="https://wa.me/6285121009692?text=Halo%20SSDC%2C%20saya%20ingin%20mendaftar%20untuk%20konsultasi%2Fperawatan%20gigi.%0AMohon%20informasinya%20mengenai%20jadwal%20dan%20prosedur%20pendaftaran.%0ATerima%20kasih."
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <p className="font-bold">Daftar Sekarang</p>
+              </a>
             </div>
             <div className="flex items-center justify-center gap-4 mt-4">
               <a
-                href="https://wa.me/6281234567890"
+                href="https://www.instagram.com/doktergigi.payakumbuh/"
                 target="_blank"
                 rel="noopener noreferrer"
+                aria-label="Instagram SSDC"
                 className="transition-transform duration-200 hover:scale-110"
               >
                 <img
-                  src={whatsapp}
-                  alt="Logo WhatsApp resmi SSDC"
+                  src={instagram}
+                  alt="Logo Instagram resmi SSDC"
                   width={45}
                   height={45}
                   loading="eager"
@@ -87,15 +95,30 @@ export default function Home() {
                 />
               </a>
               <a
-                href="https://www.instagram.com/akunmu"
+                href="https://www.facebook.com/SSDC-Senyum-Sehat-Dental-Care-100063684277732/"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Hubungi kami via WhatsApp"
+                aria-label="Facebook SSDC"
+                className="transition-transform duration-200 hover:scale-110"
+              ><img
+                  src={facebook}
+                  alt="Logo Facebook resmi SSDC"
+                  width={45}
+                  height={45}
+                  loading="eager"
+                  className="w-[45px] h-[45px] object-contain"
+                />
+              </a>
+              <a
+                href="https://www.tiktok.com/@senyumsehatdentalcare" 
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok SSDC"
                 className="transition-transform duration-200 hover:scale-110"
               >
                 <img
-                  src={instagram}
-                  alt="Logo Instagram resmi SSDC"
+                  src={tiktok}
+                  alt="Logo TikTok resmi SSDC"
                   width={45}
                   height={45}
                   loading="eager"
@@ -143,7 +166,7 @@ export default function Home() {
 
             <div className="rounded-2xl overflow-hidden shadow-lg border border-purple-300 w-full max-w-md mx-auto lg:mx-0">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7815754724784!2d100.6307959!3d-0.24590070000000006!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e2ab4cf7fbd789f%3A0x4119d8a8e90c6794!2sDepan%20kantor%20Gol%20kar%2C%20Jl.%20Pahlawan%20dekat%20SULTAN%20MADANI%20RESIDENCE%20No.86A%2C%20Sawah%20Padang%2C%20Kec.%20Payakumbuh%20Sel.%2C%20Kota%20Payakumbuh%2C%20Sumatera%20Barat%2026222!5e0!3m2!1sid!2sid!4v1760688562168!5m2!1sid!2sid"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7815913401755!2d100.6307807!3d-0.2458476!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e2ab4cf792d0f9b%3A0x5b7b3167853c3c32!2sSSDC%20Senyum%20Sehat%20Dental%20Care%20Payakumbuh!5e0!3m2!1sid!2sid!4v1761054951094!5m2!1sid!2sid"
                 width="600"
                 height="400"
                 allowFullScreen={true}
@@ -190,14 +213,16 @@ export default function Home() {
                 loading="lazy"
                 className="w-[200px] h-auto object-contain drop-shadow-lg"
               />
-              <a
-                href="https://g.page/r/CTI8PIVnMXtbEBM/review"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm mt-2 text-center lg:text-end underline hover:text-purple-900"
-              >
-                https://g.page/r/CTI8PIVnMXtbEBM/review
-              </a>
+              <div className="mt-4 bg-white w-fit h-fit text-[#6E1A7E] px-10 py-2 rounded-full drop-shadow-lg transition-transform duration-200 hover:scale-105">
+                <a
+                  href="https://g.page/r/CTI8PIVnMXtbEBM/review"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-bold whitespace-nowrap"
+                >
+                  Berikan Ulasan Disini
+                </a>
+              </div>
             </div>
 
             <div className="absolute -bottom-2/12 hidden -left-1 -translate-x-1/2 lg:flex items-end justify-center z-0">
