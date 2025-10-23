@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import bgHero from "./assets/image/bg-hero.jpg";
 import overlay from "./assets/image/overlay.png";
 import logo from "./assets/image/logo.png";
@@ -19,6 +20,70 @@ import before2 from "./assets/image/before1.jpg";
 import after2 from "./assets/image/bg-hero.jpg";
 import before3 from "./assets/image/before1.jpg";
 import after3 from "./assets/image/bg-hero.jpg";
+
+interface Kasus {
+  description: string;
+  title: string;
+  beforeImage: string;
+  afterImage: string;
+}
+
+function BeforeAfterCard({ kasus: kasus }: { kasus: Kasus }) {
+  const [showAfter, setShowAfter] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShowAfter((prev) => !prev);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition duration-300 hover:scale-[1.03] border border-[#6E1A7E]/20">
+      <div className="relative h-64 overflow-hidden">
+        <img
+          src={kasus.beforeImage}
+          alt={`Sebelum: ${kasus.title}`}
+          width={400}
+          height={256}
+          loading="lazy"
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ${
+            showAfter ? "opacity-0" : "opacity-100"
+          }`}
+        />
+        <div
+          className={`absolute inset-0 flex items-center justify-center text-white bg-black/40 transition-opacity duration-500 ${
+            showAfter ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          <span className="text-2xl font-bold">SEBELUM</span>
+        </div>
+        <img
+          src={kasus.afterImage}
+          alt={`Sesudah: ${kasus.title}`}
+          width={400}
+          height={256}
+          loading="lazy"
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 ${
+            showAfter ? "opacity-100" : "opacity-0"
+          }`}
+        />
+        <div
+          className={`absolute inset-0 flex items-center justify-center text-white bg-[#6E1A7E]/60 transition-opacity duration-500 ${
+            showAfter ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <span className="text-2xl font-bold">SESUDAH</span>
+        </div>
+      </div>
+
+      <div className="p-5 text-center">
+        <h3 className="text-xl font-bold text-[#6E1A7E] mb-2">{kasus.title}</h3>
+        <p className="text-gray-600 text-sm">{kasus.description}</p>
+      </div>
+    </div>
+  );
+}
 
 export default function Home() {
   const mapsAddress = "Jl. Pahlawan 86A Sawah Padang, Payakumbuh Selatan";
@@ -154,7 +219,7 @@ export default function Home() {
                 />
               </a>
               <a
-                href="https://www.facebook.com/SSDC-Senyum-Sehat-Dental-Care-100063684277732/"
+                href="https://www.facebook.com/drgmunadiyah/?locale=id_ID"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook SSDC"
@@ -170,7 +235,7 @@ export default function Home() {
                 />
               </a>
               <a
-                href="https://www.tiktok.com/@senyumsehatdentalcare"
+                href="https://www.tiktok.com/@doktergigi.payakumbuh"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="TikTok SSDC"
@@ -241,39 +306,7 @@ export default function Home() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {beforeAfterCases.map((kasus, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl shadow-xl overflow-hidden group transform transition duration-300 hover:scale-[1.03] border border-[#6E1A7E]/20"
-              >
-                <div className="relative h-64 overflow-hidden">
-                  <img
-                    src={kasus.beforeImage}
-                    alt={`Sebelum: ${kasus.title}`}
-                    width={400}
-                    height={256}
-                    loading="lazy"
-                    className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500 group-hover:opacity-0"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center text-white bg-black/40 opacity-100 group-hover:opacity-0 transition-opacity duration-500">
-                    <span className="text-2xl font-bold">SEBELUM</span>
-                  </div>
-                  <img
-                    src={kasus.afterImage}
-                    alt={`Sesudah: ${kasus.title}`}
-                    width={400}
-                    height={256}
-                    loading="lazy"
-                    className="absolute inset-0 w-full h-full object-cover object-center opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center text-white bg-[#6E1A7E]/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <span className="text-2xl font-bold">SESUDAH</span>
-                  </div>
-                </div>
-                <div className="p-5 text-center">
-                  <h3 className="text-xl font-bold text-[#6E1A7E] mb-2">{kasus.title}</h3>
-                  <p className="text-gray-600 text-sm">{kasus.description}</p>
-                </div>
-              </div>
+              <BeforeAfterCard key={index} kasus={kasus} />
             ))}
           </div>
         </div>
