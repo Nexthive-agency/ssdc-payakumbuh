@@ -20,6 +20,7 @@ import before2 from "./assets/image/before1.jpg";
 import after2 from "./assets/image/bg-hero.jpg";
 import before3 from "./assets/image/before1.jpg";
 import after3 from "./assets/image/bg-hero.jpg";
+import FramerCarousel from "./corousel";
 
 interface Kasus {
   description: string;
@@ -265,32 +266,7 @@ export default function Home() {
               Lihat pengalaman mereka yang sudah mendapatkan Senyum Sehat di SSDC.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
-              <div
-                key={index}
-                className="bg-[#A25BD9]/10 p-4 rounded-2xl shadow-lg border border-[#A25BD9]/30 transform transition duration-300 hover:shadow-xl hover:scale-[1.02] flex flex-col"
-              >
-                <div className="mb-4 overflow-hidden rounded-xl h-48 md:h-56">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.alt}
-                    width={400}
-                    height={200}
-                    loading="lazy"
-                    className="w-full h-full object-cover object-center"
-                  />
-                </div>
-                <div className="flex-grow flex flex-col">
-                  <div className="text-2xl text-[#6E1A7E] font-serif mb-2">“</div>
-                  <p className="text-gray-700 italic mb-4 flex-grow">{testimonial.quote}</p>
-                  <div className="text-right pt-2 border-t border-gray-300">
-                    <p className="font-bold text-[#6E1A7E]">- {testimonial.name}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <FramerCarousel items={testimonials} />
         </div>
       </section>
 
