@@ -22,14 +22,14 @@ import before3 from "./assets/image/before1.jpg";
 import after3 from "./assets/image/bg-hero.jpg";
 import FramerCarousel from "./corousel";
 
-interface Kasus {
+export interface Kasus {
   description: string;
   title: string;
   beforeImage: string;
   afterImage: string;
 }
 
-function BeforeAfterCard({ kasus: kasus }: { kasus: Kasus }) {
+function BeforeAfterCard({ kasus }: { kasus: Kasus }) {
   const [showAfter, setShowAfter] = useState(false);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ function BeforeAfterCard({ kasus: kasus }: { kasus: Kasus }) {
   }, []);
 
   return (
-    <div className="bg-white rounded-2xl shadow-xl overflow-hidden transform transition duration-300 hover:scale-[1.03] border border-[#6E1A7E]/20">
+    <div className="min-w-[280px] sm:min-w-[320px] bg-white rounded-2xl shadow-xl overflow-hidden transform transition duration-300 hover:scale-[1.03] border border-[#6E1A7E]/20">
       <div className="relative h-64 overflow-hidden">
         <img
           src={kasus.beforeImage}
@@ -87,11 +87,6 @@ function BeforeAfterCard({ kasus: kasus }: { kasus: Kasus }) {
 }
 
 export default function Home() {
-  const mapsAddress = "Jl. Pahlawan 86A Sawah Padang, Payakumbuh Selatan";
-  const mapsRouteUrl = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(
-    mapsAddress
-  )}`;
-
   const testimonials = [
     {
       quote:
@@ -121,21 +116,24 @@ export default function Home() {
       title: "Pembersihan Karang Gigi (Scaling)",
       beforeImage: before1,
       afterImage: after1,
-      description: "Hasil maksimal menghilangkan plak dan karang gigi yang membandel.",
+      description:
+        "Hasil maksimal menghilangkan plak dan karang gigi yang membandel.",
     },
     {
       title: "Perawatan Estetik Veneer",
       beforeImage: before2,
       afterImage: after2,
-      description: "Perubahan senyum drastis untuk penampilan yang lebih percaya diri.",
+      description:
+        "Perubahan senyum drastis untuk penampilan yang lebih percaya diri.",
     },
     {
       title: "Penambalan Komposit",
       beforeImage: before3,
       afterImage: after3,
-      description: "Mengembalikan bentuk dan fungsi gigi yang berlubang dengan estetik yang sempurna.",
+      description:
+        "Mengembalikan bentuk dan fungsi gigi yang berlubang dengan estetik yang sempurna.",
     },
-  ];
+  ] as const;
 
   return (
     <>
@@ -263,7 +261,8 @@ export default function Home() {
               Apa Kata Pasien Kami?
             </h2>
             <p className="text-xl text-gray-600">
-              Lihat pengalaman mereka yang sudah mendapatkan Senyum Sehat di SSDC.
+              Lihat pengalaman mereka yang sudah mendapatkan Senyum Sehat di
+              SSDC.
             </p>
           </div>
           <FramerCarousel items={testimonials} />
@@ -274,17 +273,18 @@ export default function Home() {
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-extrabold text-[#6E1A7E] mb-2">
-              Lihat Perubahannya <span className="text-white">(Before & After)</span>
+              Lihat Perubahannya{" "}
+              <span className="text-white">(Before & After)</span>
             </h2>
             <p className="text-xl text-white">
               Kami menciptakan senyum terbaik untuk setiap pasien.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <FramerCarousel items={beforeAfterCases as unknown as never[]}>
             {beforeAfterCases.map((kasus, index) => (
-              <BeforeAfterCard key={index} kasus={kasus} />
+              <BeforeAfterCard key={index} kasus={kasus as Kasus} />
             ))}
-          </div>
+          </FramerCarousel>
         </div>
       </section>
 
@@ -300,7 +300,9 @@ export default function Home() {
           <div className="text-center lg:text-left">
             <div className="flex flex-col items-center lg:items-start mb-2">
               <div className="flex items-center gap-2">
-                <h2 className="text-3xl md:text-4xl font-extrabold">Temukan Kami</h2>
+                <h2 className="text-3xl md:text-4xl font-extrabold">
+                  Temukan Kami
+                </h2>
                 <div className="relative w-[120px] h-[45px] flex items-center justify-center">
                   <img
                     src={disiniTag}
@@ -314,10 +316,12 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <p className="mb-4">Jl. Pahlawan 86A Sawah Padang, Payakumbuh Selatan</p>
+            <p className="mb-4">
+              Jl. Pahlawan 86A Sawah Padang, Payakumbuh Selatan
+            </p>
             <div className="mb-6 w-full max-w-md mx-auto lg:mx-0">
               <a
-                href={mapsRouteUrl}
+                href="https://maps.app.goo.gl/UgqNyU4NiHZmELRr6"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block w-full bg-[#6E1A7E] text-white font-bold px-6 py-3 rounded-xl drop-shadow-lg transition-transform duration-200 hover:scale-[1.02] hover:bg-[#52135f] text-lg"
@@ -327,7 +331,7 @@ export default function Home() {
             </div>
             <div className="rounded-2xl overflow-hidden shadow-lg border border-purple-300 w-full max-w-md mx-auto lg:mx-0">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7815913401755!2d100.6307807!3d-0.2458476!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e2ab4cf792d0f9b%3A0x5b7b3167853c3c32!2sSSDC%20Senyum%20Sehat%20Dental%20Care%20Payakumbuh!5e0!3m2!1sid!2sid!4v1761054951094!5m2!1sid!2sid"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7815929430785!2d100.62820577447748!3d-0.24584223537294264!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e2ab4cf792d0f9b%3A0x5b7b3167853c3c32!2sSSDC%20Senyum%20Sehat%20Dental%20Care%20Payakumbuh!5e0!3m2!1sid!2sid!4v1761482352922!5m2!1sid!2sid"
                 width="600"
                 height="400"
                 allowFullScreen={true}
@@ -340,7 +344,9 @@ export default function Home() {
           </div>
           <div className="relative flex flex-col items-center lg:items-end justify-center lg:justify-end space-y-8">
             <div className="flex flex-wrap items-center justify-center gap-3 mb-3 z-10">
-              <p className="text-2xl md:text-3xl font-bold">Berikan Ulasan dan Saran</p>
+              <p className="text-2xl md:text-3xl font-bold">
+                Berikan Ulasan dan Saran
+              </p>
               <div className="flex items-center gap-3">
                 <p className="text-2xl md:text-3xl font-bold">untuk</p>
                 <img
