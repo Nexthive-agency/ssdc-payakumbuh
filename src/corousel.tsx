@@ -53,7 +53,7 @@ export default function FramerCarousel({ items, children }: CarouselProps) {
   const carouselContent = children || items.map((item, i) => (
     <motion.div
         key={i}
-        className="min-w-[280px] sm:min-w-[320px] bg-white shadow-lg rounded-2xl overflow-hidden flex flex-col items-center border border-[#6E1A7E]/20 hover:scale-[1.02] transition-transform"
+        className="min-w-[280px] sm:min-w-[320px] bg-white shadow-lg rounded-2xl overflow-hidden flex flex-col items-center border border-gray-200 hover:scale-[1.02] transition-transform"
     >
         {item.image && (
           <img

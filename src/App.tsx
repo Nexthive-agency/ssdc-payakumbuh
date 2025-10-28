@@ -11,15 +11,14 @@ import maskot2 from "./assets/image/maskot2.png";
 import keluarga from "./assets/image/keluarga.png";
 import facebook from "./assets/image/facebook.png";
 import tiktok from "./assets/image/tiktok.png";
-import perawatan1 from "./assets/image/perawatan1.jpg";
-import perawatan2 from "./assets/image/perawatan1.jpg";
-import perawatan3 from "./assets/image/perawatan1.jpg";
-import before1 from "./assets/image/before1.jpg";
-import after1 from "./assets/image/bg-hero.jpg";
-import before2 from "./assets/image/before1.jpg";
-import after2 from "./assets/image/bg-hero.jpg";
-import before3 from "./assets/image/before1.jpg";
-import after3 from "./assets/image/bg-hero.jpg";
+import bridgeSebelum from "./assets/image/beforAfter/bridge_gigi_depan_befor.jpeg"
+import bridgeSetelah from "./assets/image/beforAfter/bridge_gigi_depanAfter.jpeg"
+import crownSebelum from "./assets/image/beforAfter/Crown_gigi_belakang_sebelum.jpeg"
+import crownSetelah from "./assets/image/beforAfter/Crown_gigi_belakang_sesudah.jpeg"
+import skelingSebelum from "./assets/image/beforAfter/skeling_gigi_sebelum.jpeg"
+import skelingSesudah from "./assets/image/beforAfter/skeling_gigi_sesudah.jpeg"
+import tambalResinSebelum from "./assets/image/beforAfter/tambal_serin_komposit_sebelum.jpeg"
+import tambalResinSesudah from "./assets/image/beforAfter/tambal_resin_komposit_sesudah.jpeg"
 import FramerCarousel from "./corousel";
 
 export interface Kasus {
@@ -87,51 +86,35 @@ function BeforeAfterCard({ kasus }: { kasus: Kasus }) {
 }
 
 export default function Home() {
-  const testimonials = [
-    {
-      quote:
-        "Pelayanan ramah, dokternya teliti banget, dan hasil scaling-nya bersih. Tempatnya juga nyaman dan mudah dijangkau. Sangat recommended!",
-      name: "Rina S.",
-      image: perawatan1,
-      alt: "Pasien sedang melakukan perawatan pembersihan karang gigi",
-    },
-    {
-      quote:
-        "Anak saya awalnya takut ke dokter gigi, tapi di SSDC jadi berani karena dokternya sabar dan komunikatif. Terima kasih SSDC!",
-      name: "Budi H. (Wali)",
-      image: perawatan2,
-      alt: "Dokter sedang berinteraksi dengan pasien anak",
-    },
-    {
-      quote:
-        "Proses cabut giginya cepat dan tanpa rasa sakit berlebihan. Semua staff profesional. Pilihan terbaik untuk perawatan gigi di Payakumbuh.",
-      name: "Fira A.",
-      image: perawatan3,
-      alt: "Pasien menunjukkan senyum sehat setelah perawatan",
-    },
-  ];
 
   const beforeAfterCases = [
     {
-      title: "Pembersihan Karang Gigi (Scaling)",
-      beforeImage: before1,
-      afterImage: after1,
+      title: "Pemasangan Bridge Gigi Depan Permanen Payakumbuh",
+      beforeImage: bridgeSebelum,
+      afterImage: bridgeSetelah,
       description:
-        "Hasil maksimal menghilangkan plak dan karang gigi yang membandel.",
+        "Ganti gigi depan yang hilang dengan Bridge gigi permanen. Solusi cepat dan estetik untuk mengembalikan fungsi bicara dan kepercayaan diri Anda. Bridge akan menyatu sempurna dengan gigi alami Anda. Dapatkan Bridge gigi berkualitas tinggi di Payakumbuh.",
     },
     {
-      title: "Perawatan Estetik Veneer",
-      beforeImage: before2,
-      afterImage: after2,
+      title: "Pemasangan Crown / Jaket Gigi (Pelindung) Gigi Belakang",
+      beforeImage: crownSebelum,
+      afterImage: crownSetelah,
       description:
-        "Perubahan senyum drastis untuk penampilan yang lebih percaya diri.",
+        "Crown gigi berfungsi melindungi gigi yang rusak parah (setelah PSA atau tambalan besar) dari patah. Crown berkualitas di SSDC mengembalikan kekuatan, bentuk, dan fungsi gigitan. Konsultasikan jenis material Crown yang tepat untuk Anda.",
     },
     {
-      title: "Penambalan Komposit",
-      beforeImage: before3,
-      afterImage: after3,
+      title: "Scaling Gigi & Pembersihan Karang Gigi Profesional di Payakumbuh",
+      beforeImage: skelingSebelum,
+      afterImage: skelingSesudah,
       description:
-        "Mengembalikan bentuk dan fungsi gigi yang berlubang dengan estetik yang sempurna.",
+        "Bersihkan karang gigi, plak, dan noda membandel yang menyebabkan bau mulut dan radang gusi. Scaling teratur menjaga kesehatan mulut dan mencegah penyakit gusi. Rasakan sensasi gigi bersih optimal hanya di SSDC.",
+    },
+    {
+      title: "Tambal Gigi Resin Komposit Tahan Lama untuk Gigi Belakang",
+      beforeImage: tambalResinSebelum,
+      afterImage: tambalResinSesudah,
+      description:
+        "Mengembalikan bentuk dan fungsi gigitan pada gigi geraham yang berlubang. Kami menggunakan resin komposit kualitas premium yang kuat dan tahan lama, cocok untuk menahan tekanan saat mengunyah. Dapatkan penanganan cepat dan nyaman.",
     },
   ] as const;
 
@@ -254,29 +237,14 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-20 px-6 bg-white/90 overflow-hidden">
-        <div className="mx-auto max-w-7xl">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-[#6E1A7E] mb-2">
-              Apa Kata Pasien Kami?
-            </h2>
-            <p className="text-xl text-gray-600">
-              Lihat pengalaman mereka yang sudah mendapatkan Senyum Sehat di
-              SSDC.
-            </p>
-          </div>
-          <FramerCarousel items={testimonials} />
-        </div>
-      </section>
-
-      <section className="py-20 px-6 bg-[#6E1A7E]/5 overflow-hidden">
+      <section className="py-20 px-6 bg-gray-100 overflow-hidden">
         <div className="mx-auto max-w-7xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-extrabold text-[#6E1A7E] mb-2">
               Lihat Perubahannya{" "}
-              <span className="text-white">(Before & After)</span>
+              <span className="text-[#6E1A7E]">(Before & After)</span>
             </h2>
-            <p className="text-xl text-white">
+            <p className="text-xl text-[#6E1A7E]">
               Kami menciptakan senyum terbaik untuk setiap pasien.
             </p>
           </div>
