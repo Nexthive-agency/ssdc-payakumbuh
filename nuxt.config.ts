@@ -34,7 +34,7 @@ export default defineNuxtConfig({
           content:
             "Layanan dokter gigi terpercaya di Payakumbuh & Lima Puluh Kota. Perawatan gigi lengkap untuk senyum sehat dan percaya diri.",
         },
-        { property: "og:image", content: "https://ssdc.my.id/image/logo.png" },
+        { property: "og:image", content: "https://ssdc.my.id/ssdc_logo.jpg" },
         {
           property: "og:see_also",
           content: "https://www.tiktok.com/@doktergigi.payakumbuh",
