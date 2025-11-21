@@ -39,7 +39,7 @@ export type Product = {
 }
 
 const _products = ref<Product[]>([
-  {
+ {
     id: 1,
     name: 'Pembersihan Karang Gigi',
     slug: 'karang-gigi',
@@ -54,7 +54,7 @@ const _products = ref<Product[]>([
   },
   {
     id: 2,
-    name: 'Tambal Gigi RKT',
+    name: 'Tambal Gigi RK',
     slug: 'tambal-gigi-rk',
     price: 300000,
     rating: 4.5,
@@ -76,7 +76,7 @@ const _products = ref<Product[]>([
     tags: ['Tambalan Gigi', 'Perawatan Gigi'],
     isBest: false,
     description: 'Tambal gigi dengan GIC, bahan tambalan yang melepaskan Fluoride untuk membantu mencegah kerusakan gigi lebih lanjut. Pilihan ideal untuk tambalan sementara, tambalan kecil, atau gigi anak-anak (gigi susu). Prosedur cepat dan sangat baik untuk memperkuat struktur gigi. Dapatkan perlindungan ekstra dari GIC di SSDC Payakumbuh.',
-    specs: { Harga: 'Rp 200.000', Durasi: '1 Jam' }
+    specs: { Harga: 'Rp 100.000 - 200.000', Durasi: '1 Jam' }
   },
   {
     id: 4,
@@ -90,24 +90,23 @@ const _products = ref<Product[]>([
     tags: ['Perawatan Saluran Akar', 'Dental Care'],
     isBest: true,
     description: 'Jangan biarkan gigi yang sakit parah dicabut! Perawatan Saluran Akar (PSA) menghilangkan infeksi dan menyelamatkan gigi Anda. Prosedur profesional dan minim rasa sakit untuk mengobati pulpa gigi. Lindungi gigi belakang Anda dari pencabutan.',
-    specs: { Harga: 'Rp 350.000', Durasi: '2 Jam' }
+    specs: { Harga: 'Rp 150.000 - 1.000.000', Durasi: '2 Jam' }
   },
-
+  {
+    id: 5,
+    name: 'Rontgen Peripikal',
+    slug: 'rontgen-peripikal',
+    price: 100000,
+    rating: 4.3,
+    category: 'xrays',
+    image: rontgen_periapikal_1,
+    tags: ['Rontgen', 'Pemeriksaan Gigi'],
+    isBest: false,
+    description: 'Diagnosa masalah gigi, akar, dan tulang di sekitarnya dengan akurat menggunakan Rontgen Periapikal. Diperlukan untuk melihat kondisi infeksi saluran akar, kista, atau sebelum cabut gigi. Proses cepat, radiasi minim, dan hasilnya membantu dokter gigi merencanakan perawatan yang paling tepat. Dapatkan diagnosa pasti di SSDC Payakumbuh.',
+    specs: { Harga: 'Rp 100.000', Durasi: '15 Menit' }
+  },
   {
     id: 6,
-    name: 'Cabut Gigi Anak',
-    slug: 'cabut-gigi-anak',
-    price: 100000,
-    rating: 4.4,
-    category: 'scaling',
-    image: cabut_anak_1, // Gambar pertama
-    tags: ['Cabut Gigi', 'Perawatan Gigi'],
-    isBest: false,
-    description: 'Hilangkan rasa takut anak Anda saat cabut gigi susu. SSDC menyediakan layanan pencabutan yang ramah anak (child-friendly), cepat, dan dilakukan dengan teknik minim nyeri. Kami memastikan pengalaman positif agar gigi permanen anak Anda dapat tumbuh sehat. Prioritaskan senyum ceria anak Anda bersama Dokter Gigi Anak profesional kami!',
-    specs: { Harga: 'Rp 100.000', Durasi: '30 Menit' }
-  },
-  {
-    id: 7,
     name: 'Cabut Gigi Dewasa',
     slug: 'cabut-gigi-dewasa',
     price: 200000,
@@ -118,23 +117,23 @@ const _products = ref<Product[]>([
     tags: ['Cabut Gigi', 'Perawatan Gigi'],
     isBest: false,
     description: 'Layanan pencabutan gigi dewasa yang profesional dan higienis. Diperlukan untuk gigi yang rusak parah, infeksi, atau persiapan ortodonti (behel). Ditangani oleh drg. berpengalaman, kami memastikan prosedur berlangsung aman dengan protokol sterilisasi ketat. Konsultasikan kebutuhan cabut gigi Anda di SSDC Payakumbuh.',
-    specs: { Harga: 'Rp 200.000 - 300.000', Durasi: '30 Menit' }
+    specs: { Harga: 'Rp 200.000 - 2.000.000', Durasi: '30 Menit' }
+  },
+  {
+    id: 7,
+    name: 'Cabut Gigi Anak',
+    slug: 'cabut-gigi-anak',
+    price: 150000,
+    rating: 4.4,
+    category: 'scaling',
+    image: cabut_anak_1, // Gambar pertama
+    tags: ['Cabut Gigi', 'Perawatan Gigi'],
+    isBest: false,
+    description: 'Hilangkan rasa takut anak Anda saat cabut gigi susu. SSDC menyediakan layanan pencabutan yang ramah anak (child-friendly), cepat, dan dilakukan dengan teknik minim nyeri. Kami memastikan pengalaman positif agar gigi permanen anak Anda dapat tumbuh sehat. Prioritaskan senyum ceria anak Anda bersama Dokter Gigi Anak profesional kami!',
+    specs: { Harga: 'Rp 150.000', Durasi: '30 Menit' }
   },
   {
     id: 8,
-    name: 'Rontgen Peripikal',
-    slug: 'rontgen-peripikal',
-    price: 150000,
-    rating: 4.3,
-    category: 'xrays',
-    image: rontgen_periapikal_1,
-    tags: ['Rontgen', 'Pemeriksaan Gigi'],
-    isBest: false,
-    description: 'Diagnosa masalah gigi, akar, dan tulang di sekitarnya dengan akurat menggunakan Rontgen Periapikal. Diperlukan untuk melihat kondisi infeksi saluran akar, kista, atau sebelum cabut gigi. Proses cepat, radiasi minim, dan hasilnya membantu dokter gigi merencanakan perawatan yang paling tepat. Dapatkan diagnosa pasti di SSDC Payakumbuh.',
-    specs: { Harga: 'Rp 150.000', Durasi: '15 Menit' }
-  },
-  {
-    id: 9,
     name: 'Veneer direct',
     slug: 'veneers-direct',
     price: 500000,
@@ -145,10 +144,10 @@ const _products = ref<Product[]>([
     tags: ['Veneer', 'Estetika', 'Dental Care'],
     isBest: true,
     description: 'Dapatkan senyum impian Anda dalam satu kunjungan! Veneer Direct menggunakan bahan komposit estetik untuk menutupi celah, perubahan warna, atau bentuk gigi yang tidak rata. Prosedur cepat, minim invasif, dan hasilnya custom sesuai keinginan Anda. Tingkatkan kepercayaan diri Anda dengan senyum selebriti di Payakumbuh.',
-    specs: { Harga: 'Rp 3.000.000', Durasi: '2 Jam' }
+    specs: { Harga: 'Rp 500.000', Durasi: '2 Jam' }
   },
   {
-    id: 10,
+    id: 9,
     name: 'Veneer Indirect',
     slug: 'veneers-indirect',
     price: 3000000,
@@ -161,35 +160,48 @@ const _products = ref<Product[]>([
     specs: { Harga: 'Rp 3.000.000', Durasi: '2 Jam' }
   },
   {
-    id: 11,
-    name: 'Behel Ceramic',
-    slug: 'behel-ceramic',
-    price: 4000000,
-    rating: 4.9,
-    category: 'orthodontics',
-    image: behel_ceramic_1,
-    tags: ['Behel', 'Orthodontics'],
-    isBest: true,
-    description: 'Ingin merapikan gigi tanpa mengorbankan penampilan? Behel Keramik adalah solusinya. Warna bracket keramik yang transparan menyerupai warna gigi asli, menjadikannya pilihan estetik yang efektif untuk meratakan gigi. Dapatkan perawatan ortho terpercaya dengan tampilan minimalis di SSDC Payakumbuh. Hubungi kami untuk jadwal konsultasi!',
-    specs: { Harga: 'Rp 4.000.000', Durasi: '1 Tahun' }
-  },
-  {
-    id: 12,
+    id: 10,
     name: 'Behel Metal Ra/Rb',
     slug: 'behel-metal-ra-rb',
-    price: 6000000,
+    price: 4000000,
     rating: 4.5,
     category: 'orthodontics',
     image: behel_metal_ra_rb_1,
     tags: ['Behel', 'Orthodontics'],
     isBest: false,
     description: 'Dapatkan perawatan perataan gigi yang terbukti efektif dengan Behel Metal. Pilihan paling andal dan terjangkau untuk semua kasus gigi, dari yang ringan hingga kompleks. Bracket metal modern dan kuat, memastikan gigi Anda bergerak sesuai rencana perawatan. Percayakan pemasangan behel metal Anda pada dokter ortho terpercaya di SSDC Payakumbuh.',
+    specs: { Harga: 'Rp 3.500.000 - 5.000.000', Durasi: '1 Tahun' }
+  },
+  {
+    id: 11,
+    name: 'Behel Ceramic',
+    slug: 'behel-ceramic',
+    price: 6000000,
+    rating: 4.9,
+    category: 'orthodontics',
+    image: behel_ceramic_1,
+    tags: ['Behel', 'Orthodontics'],
+    isBest: true,
+    description: 'Ingin merapikan gigi tanpa mengorbankan penampilan? Behel Keramik adalah solusinya. Warna bracket keramik yang transparan menyerupai warna gigi asli, menjadikannya pilihan estetik yang efektif untuk meratakan gigi. Dapatkan perawatan ortho terpercaya dengan tampilan minimalis di SSDC Payakumbuh. Hubungi kami untuk jadwal konsultasi!',
     specs: { Harga: 'Rp 6.000.000', Durasi: '1 Tahun' }
   },
   {
+    id: 12,
+    name: 'Gigi Palsu',
+    slug: 'gigi-palsu',
+    price: 350000,
+    rating: 4.6,
+    category: 'crown',
+    image: gigi_palsu, // Gambar untuk produk ini
+    tags: ['Gigi Palsu', 'Dental Care'],
+    isBest: true,
+    description: 'Kembalikan fungsi kunyah dan senyum penuh percaya diri Anda! Kami menyediakan pembuatan gigi palsu lepasan (sebagian atau penuh) yang dibuat presisi dan terasa nyaman di mulut. Gigi palsu dirancang estetis dan fungsional agar Anda dapat makan dan berbicara dengan normal kembali. Konsultasikan material gigi palsu terbaik untuk Anda di SSDC Payakumbuh.',
+    specs: { Harga: 'Rp 150.000 - 1.500.000', Durasi: '2 Jam' }
+  },
+  {
     id: 13,
-    name: 'Mahkota Gigi PFM',
-    slug: 'mahkota-gigi-pfm',
+    name: 'Mahkota Gigi',
+    slug: 'mahkota-gigi',
     price: 1500000,
     rating: 4.7,
     category: 'crown',
@@ -198,21 +210,8 @@ const _products = ref<Product[]>([
     tags: ['Mahkota Gigi', 'Estetika', 'Gigi Palsu'],
     isBest: false,
     description: 'Dapatkan solusi restorasi gigi yang kuat dan tampil cantik dengan Mahkota PFM. Mahkota ini menggabungkan kekuatan kerangka metal dengan lapisan porselen yang menyerupai gigi asli. Cocok untuk gigi belakang yang membutuhkan daya tahan kunyah tinggi sekaligus menjaga estetika senyum Anda. Konsultasikan Mahkota PFM Anda di SSDC Payakumbuh.',
-    specs: { Harga: 'Rp 1.500.000', Durasi: '2 Jam' }
+    specs: { Harga: 'Rp 1.500.000 - 3.500.000', Durasi: '2 Jam' }
   },
-  {
-    id: 14,
-    name: 'Gigi Palsu Lepasan',
-    slug: 'gigi-palsu-lepas',
-    price: 350000,
-    rating: 4.6,
-    category: 'crown',
-    image: gigi_palsu, // Gambar untuk produk ini
-    tags: ['Gigi Palsu', 'Dental Care'],
-    isBest: true,
-    description: 'Kembalikan fungsi kunyah dan senyum penuh percaya diri Anda! Kami menyediakan pembuatan gigi palsu lepasan (sebagian atau penuh) yang dibuat presisi dan terasa nyaman di mulut. Gigi palsu dirancang estetis dan fungsional agar Anda dapat makan dan berbicara dengan normal kembali. Konsultasikan material gigi palsu terbaik untuk Anda di SSDC Payakumbuh.',
-    specs: { Harga: 'Rp 350.000', Durasi: '2 Jam' }
-  }
 ])
 
 export function useProducts() {
