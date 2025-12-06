@@ -34,7 +34,7 @@ function ambilAntrian() {
 
   const message = `Halo Kak, saya tertarik untuk mengambil antrian pada produk "${product.value!.name}". Mohon informasinya, bagaimana cara untuk melanjutkan? Terima kasih!`
 
-  const waUrl = `https://wa.me/+6282288297900?text=${encodeURIComponent(message)}`
+  const waUrl = `https://wa.me/+6285121009692?text=${encodeURIComponent(message)}`
 
   window.location.href = waUrl
 }
@@ -70,7 +70,7 @@ useHead({
     <div class="mt-4 grid gap-6 lg:grid-cols-2">
       <!-- Gallery -->
       <div class="card bg-base-100 border border-base-300/70 shadow-sm overflow-hidden relative">
-        <figure class="aspect-[4/3]">
+        <figure class="aspect-4/4">
           <img
             :src="product!.image + '?auto=format&fit=crop&w=1200&q=70'"
             :alt="product!.name"

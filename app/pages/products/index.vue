@@ -147,9 +147,6 @@ onMounted(() => {
 
         <!-- Sorter -->
         <label class="form-control md:col-span-2">
-          <div class="label">
-            <span class="label-text">Urutkan</span>
-          </div>
           <select v-model="sortBy" class="select select-bordered" @change="applyFiltersImmediate" aria-label="Urutkan produk">
             <option value="popular">Terpopuler</option>
             <option value="rating">Rating</option>
