@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed, nextTick } from 'vue';
 
 import bridgeSebelum from '~/assets/beforAfterImage/bridge_gigi_depan_befor.jpeg';
 import bridgeSetelah from '~/assets/beforAfterImage/bridge_gigi_depanAfter.jpeg';
@@ -9,7 +9,10 @@ import skelingSebelum from '~/assets/beforAfterImage/skeling_gigi_sebelum.jpeg';
 import skelingSesudah from '~/assets/beforAfterImage/skeling_gigi_sesudah.jpeg';
 import tambalResinSebelum from '~/assets/beforAfterImage/tambal_serin_komposit_sebelum.jpeg';
 import tambalResinSesudah from '~/assets/beforAfterImage/tambal_resin_komposit_sesudah.jpeg';
-const beforeAfterCases = [
+
+import TestimoniCard from '~/components/TestimoniCard.vue';
+
+const originalCases = [
     {
         title: "Pemasangan Bridge Gigi Depan Permanen Payakumbuh",
         beforeImage: bridgeSebelum,
@@ -40,19 +43,94 @@ const beforeAfterCases = [
     },
 ];
 
+// Duplicate cases 3 times for infinite scroll loop [Set A, Set B, Set C]
+const displayCases = computed(() => [...originalCases, ...originalCases, ...originalCases]);
+
 // Track the currently displayed image
 const showAfter = ref(false);
+const carouselContainer = ref(null);
 
 // Change the image every 3 seconds
-onMounted(() => {
+onMounted(async () => {
     setInterval(() => {
         showAfter.value = !showAfter.value;
     }, 3000); // Change every 3 seconds
+
+    // Initialize scroll position to the Start of Middle Set (Set B)
+    await nextTick();
+    if (carouselContainer.value) {
+        // Calculate scroll width of one set
+        const oneSetWidth = carouselContainer.value.scrollWidth / 3;
+        carouselContainer.value.scrollLeft = oneSetWidth;
+    }
 });
+
+const handleScroll = () => {
+    if (!carouselContainer.value) return;
+
+    const container = carouselContainer.value;
+    const totalWidth = container.scrollWidth;
+    const oneSetWidth = totalWidth / 3;
+    const scrollLeft = container.scrollLeft;
+
+    // Check bounds (Aggressive reset to keep in Set B)
+    // Set B range: [oneSetWidth, 2*oneSetWidth]
+    
+    // If we are too far left (entering Set A) -> Jump forward to Set B relative position
+    if (scrollLeft < 50) { // Near absolute start (Set A start)
+         container.style.scrollBehavior = 'auto'; // Instant jump
+         container.scrollLeft += oneSetWidth;
+         container.style.scrollBehavior = ''; 
+    } 
+    // If we are too far right (entering Set C end) -> Jump back to Set B relative position
+    else if (scrollLeft > oneSetWidth * 2 + oneSetWidth / 2) { // Deep into Set C
+         container.style.scrollBehavior = 'auto'; // Instant jump
+         container.scrollLeft -= oneSetWidth;
+         container.style.scrollBehavior = '';
+    }
+    // Note: Intermediate checks can be added, but pre-jump in button is smoother
+};
+
+const scroll = (direction) => {
+  if (carouselContainer.value) {
+    const container = carouselContainer.value;
+    const scrollAmount = container.clientWidth / (window.innerWidth >= 1024 ? 3 : 1);
+    const oneSetWidth = container.scrollWidth / 3;
+    
+    // PRE-JUMP LOGIC: Ensure we are in a safe scrolling zone (Set B) BEFORE animating
+    container.style.scrollBehavior = 'auto';
+    
+    if (direction === 'left') {
+        // If we in Set A (Left of Set B), jump forward to Set B
+        if (container.scrollLeft < oneSetWidth) {
+             container.scrollLeft += oneSetWidth;
+        }
+    } else { // Right
+        // If we are in Set C (Right of Set B), jump backward to Set B
+        if (container.scrollLeft >= 2 * oneSetWidth) {
+             container.scrollLeft -= oneSetWidth;
+        }
+    }
+    
+    // Force layout update to ensure browser registers the jump
+    // (void container.offsetWidth) is a trick, but requestAnimationFrame or just proceeding works in most modern browsers
+    
+    container.style.scrollBehavior = ''; // Restore smooth
+
+    // Now Scroll
+    // Use requestAnimationFrame to let the "auto" jump resolve first if needed
+    requestAnimationFrame(() => {
+        container.scrollTo({
+        left: container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount),
+        behavior: 'smooth'
+        });
+    });
+  }
+};
 </script>
 <template>
-  <section id="testimoni" class="py-20 px-6 bg-gray-100 overflow-hidden">
-    <div class="mx-auto max-w-7xl">
+  <section id="testimoni" class="py-20 px-6 bg-gray-100 overflow-hidden relative group">
+    <div class="mx-auto max-w-7xl relative">
       <div class="text-center mb-12">
         <h2 class="text-3xl md:text-4xl font-extrabold text-[#6E1A7E] mb-2">
           Lihat Perubahannya <span class="text-[#6E1A7E]">(Before & After)</span>
@@ -62,84 +140,43 @@ onMounted(() => {
         </p>
       </div>
 
-      <!-- Satu slide per layar -->
-      <div class="carousel w-full">
-        <div
-          v-for="(item, index) in beforeAfterCases"
-          :key="index"
-          class="carousel-item relative w-full"
-          :id="`slide-${index + 1}`"
-        >
-          <div class="flex justify-center p-4 w-full">
+      <!-- Carousel Container -->
+      <div class="relative w-full"> 
+         <div 
+            ref="carouselContainer" 
+            @scroll="handleScroll"
+            class="carousel carousel-center w-full p-4 space-x-4 rounded-box overflow-x-auto scroll-smooth no-scrollbar"
+         >
             <div
-              class="bg-white rounded-2xl shadow-xl overflow-hidden transition duration-300 border border-[#6E1A7E]/20 w-full max-w-xl"
+            v-for="(item, index) in displayCases"
+            :key="index"
+            class="carousel-item w-full md:w-1/2 lg:w-1/3 transition-transform duration-300"
             >
-              <div class="relative w-full h-64 md:h-80 overflow-hidden">
-                <img
-                  :src="item.beforeImage"
-                  :alt="`Sebelum: ${item.title}`"
-                  class="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500"
-                  :class="{ 'opacity-0': showAfter, 'opacity-100': !showAfter }"
-                />
-                <div
-                  class="absolute inset-0 flex items-center justify-center text-white bg-black/40 transition-opacity duration-500"
-                  :class="{ 'opacity-0': showAfter, 'opacity-100': !showAfter }"
-                >
-                  <span class="text-2xl font-bold">SEBELUM</span>
-                </div>
-
-                <img
-                  :src="item.afterImage"
-                  :alt="`Sesudah: ${item.title}`"
-                  class="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500"
-                  :class="{ 'opacity-100': showAfter, 'opacity-0': !showAfter }"
-                />
-                <div
-                  class="absolute inset-0 flex items-center justify-center text-white bg-[#6E1A7E]/60 transition-opacity duration-500"
-                  :class="{ 'opacity-100': showAfter, 'opacity-0': !showAfter }"
-                >
-                  <span class="text-2xl font-bold">SESUDAH</span>
-                </div>
-              </div>
-
-              <div class="p-5 text-center">
-                <h3 class="text-xl font-bold text-[#6E1A7E] mb-2">
-                  {{ item.title }}
-                </h3>
-                <p class="text-gray-600 text-sm">
-                  {{ item.description }}
-                </p>
-              </div>
+              <TestimoniCard :item="item" :showAfter="showAfter" />
             </div>
-          </div>
-
-          <!-- Panah dinamis -->
-          <div class="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-            <a
-              class="btn btn-circle"
-              :href="`#slide-${((index - 1 + beforeAfterCases.length) % beforeAfterCases.length) + 1}`"
-              aria-label="Sebelumnya"
-            >❮</a>
-            <a
-              class="btn btn-circle"
-              :href="`#slide-${((index + 1) % beforeAfterCases.length) + 1}`"
-              aria-label="Berikutnya"
-            >❯</a>
-          </div>
         </div>
+
+        <!-- Global Navigation Buttons -->
+        <button 
+            @click="scroll('left')" 
+            class="absolute left-0 top-1/2 -translate-y-1/2 btn btn-circle btn-primary bg-[#6E1A7E] border-none text-white shadow-lg opacity-70 hover:opacity-100 z-10 -ml-2 md:-ml-5 hidden md:flex"
+            aria-label="Previous Slide">
+            ❮
+        </button>
+        <button 
+            @click="scroll('right')" 
+            class="absolute right-0 top-1/2 -translate-y-1/2 btn btn-circle btn-primary bg-[#6E1A7E] border-none text-white shadow-lg opacity-70 hover:opacity-100 z-10 -mr-2 md:-mr-5 hidden md:flex"
+            aria-label="Next Slide">
+            ❯
+        </button>
+      </div>
+      
+      <!-- Mobile Only Indicator/Swipe Hint (Optional) -->
+      <div class="flex justify-center gap-2 mt-4 md:hidden">
+         <span class="text-sm text-gray-400 italic">Geser untuk melihat lainnya</span>
       </div>
 
-      <!-- Opsi: indikator titik (opsional) -->
-      <div class="flex justify-center gap-2 mt-6">
-        <a
-          v-for="(item, index) in beforeAfterCases"
-          :key="'dot-' + index"
-          class="btn btn-xs"
-          :href="`#slide-${index + 1}`"
-        >
-          {{ index + 1 }}
-        </a>
-      </div>
     </div>
   </section>
 </template>
+
