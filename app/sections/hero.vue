@@ -13,7 +13,7 @@ const whatsappUrl =
 
 const instagramUrl = 'https://www.instagram.com/doktergigi.payakumbuh/'
 const facebookUrl = 'https://www.facebook.com/drgmunadiyah/?locale=id_ID'
-const tiktokUrl = 'https://www.tiktok.com/~/doktergigi.payakumbuh'
+const tiktokUrl = 'https://www.tiktok.com/@doktergigi.payakumbuh'
 </script>
 
 <template>
