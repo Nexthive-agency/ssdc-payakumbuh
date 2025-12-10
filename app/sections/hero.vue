@@ -121,14 +121,13 @@ onUnmounted(() => {
         </div>
         <!-- Scroll Down Indicator -->
         <div v-if="showScrollIndicator"
-            class="absolute mb-15 bottom-5 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center animate-bounce cursor-pointer opacity-90 hover:opacity-100 transition-opacity duration-300"
+            class="absolute bottom-32 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center animate-bounce cursor-pointer opacity-90 hover:opacity-100 transition-opacity duration-300"
             @click="scrollToNextSection">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="size-6 w-10 h-10 text-white drop-shadow-md">
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5" />
             </svg>
-
         </div>
     </section>
 </template>
