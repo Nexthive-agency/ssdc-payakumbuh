@@ -1,4 +1,5 @@
 <script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
 import bgHero from "~/assets/img/bg-hero.jpg";
 import overlay from "~/assets/img/overlay.png";
 import keluarga from "~/assets/img/keluarga.png";
@@ -14,6 +15,31 @@ const whatsappUrl =
 const instagramUrl = 'https://www.instagram.com/doktergigi.payakumbuh/'
 const facebookUrl = 'https://www.facebook.com/drgmunadiyah/?locale=id_ID'
 const tiktokUrl = 'https://www.tiktok.com/@doktergigi.payakumbuh'
+
+const scrollToNextSection = () => {
+    window.scrollTo({
+        top: window.innerHeight,
+        behavior: 'smooth'
+    });
+};
+
+const showScrollIndicator = ref(true);
+
+const handleScroll = () => {
+    if (window.scrollY > 50) {
+        showScrollIndicator.value = false;
+    } else {
+        showScrollIndicator.value = true;
+    }
+};
+
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll);
+});
 </script>
 
 <template>
@@ -92,6 +118,17 @@ const tiktokUrl = 'https://www.tiktok.com/@doktergigi.payakumbuh'
                     </a>
                 </div>
             </div>
+        </div>
+        <!-- Scroll Down Indicator -->
+        <div v-if="showScrollIndicator"
+            class="absolute mb-15 bottom-5 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center animate-bounce cursor-pointer opacity-90 hover:opacity-100 transition-opacity duration-300"
+            @click="scrollToNextSection">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6 w-10 h-10 text-white drop-shadow-md">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5" />
+            </svg>
+
         </div>
     </section>
 </template>

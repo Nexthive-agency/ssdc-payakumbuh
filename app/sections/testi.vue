@@ -159,22 +159,19 @@ const scroll = (direction) => {
         <!-- Global Navigation Buttons -->
         <button 
             @click="scroll('left')" 
-            class="absolute left-0 top-1/2 -translate-y-1/2 btn btn-circle btn-primary bg-[#6E1A7E] border-none text-white shadow-lg opacity-70 hover:opacity-100 z-10 -ml-2 md:-ml-5 hidden md:flex"
+            class="absolute left-0 top-1/2 -translate-y-1/2 btn btn-circle btn-primary bg-[#6E1A7E] border-none text-white shadow-lg opacity-70 hover:opacity-100 z-10 -ml-2 md:-ml-5 flex"
             aria-label="Previous Slide">
             ❮
         </button>
         <button 
             @click="scroll('right')" 
-            class="absolute right-0 top-1/2 -translate-y-1/2 btn btn-circle btn-primary bg-[#6E1A7E] border-none text-white shadow-lg opacity-70 hover:opacity-100 z-10 -mr-2 md:-mr-5 hidden md:flex"
+            class="absolute right-0 top-1/2 -translate-y-1/2 btn btn-circle btn-primary bg-[#6E1A7E] border-none text-white shadow-lg opacity-70 hover:opacity-100 z-10 -mr-2 md:-mr-5 flex"
             aria-label="Next Slide">
             ❯
         </button>
       </div>
       
-      <!-- Mobile Only Indicator/Swipe Hint (Optional) -->
-      <div class="flex justify-center gap-2 mt-4 md:hidden">
-         <span class="text-sm text-gray-400 italic">Geser untuk melihat lainnya</span>
-      </div>
+
 
     </div>
   </section>
