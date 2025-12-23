@@ -48,6 +48,18 @@ export default defineNuxtConfig({
       link: [{ rel: "icon", type: "image/png", href: "ssdc_logo.jpg" }],
       script: [
         {
+          async: true,
+          src: "https://www.googletagmanager.com/gtag/js?id=AW-16520213356",
+        },
+        {
+          innerHTML: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-16520213356');
+          `,
+        },
+        {
           type: "application/ld+json",
           innerHTML: JSON.stringify({
             "@context": "https://schema.org",
@@ -90,3 +102,7 @@ export default defineNuxtConfig({
     },
   },
 });
+function defineNuxtConfig(arg0: { compatibilityDate: string; devtools: { enabled: boolean; }; css: string[]; vite: { plugins: any[]; }; app: { head: { title: string; meta: ({ charset: string; } | { name: string; content: string; } | { property: string; content: string; })[]; link: { rel: string; type: string; href: string; }[]; script: ({ async: boolean; src: string; } | { innerHTML: string; } | { type: string; innerHTML: string; })[]; }; }; }) {
+  throw new Error("Function not implemented.");
+}
+
