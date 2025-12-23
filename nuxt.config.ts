@@ -57,6 +57,7 @@ export default defineNuxtConfig({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', 'AW-16520213356');
+            gtag('event', 'ads_conversion_Formulir_1', {});
           `,
         },
         {
