@@ -22,3 +22,7 @@ logs
 .env
 .env.*
 !.env.example
+
+# Lighthouse reports (mengandung API key dari Maps iframe URL)
+lighthouse*.json
+lighthouse*.html
