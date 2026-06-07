@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watchEffect } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute, useRouter, useHead } from '#imports'
 import { createError } from '#app'
 // import { NuxtImg } from '#components' // optional: switch <img> → <NuxtImg>
@@ -22,21 +22,17 @@ if (!product.value) {
 const tabs = [ 'specs', 'reviews'] as const
 const activeTab = ref<typeof tabs[number]>('specs')
 
-// Qty (clamped)
-const qty = ref(1)
-watchEffect(() => { if (!qty.value || qty.value < 1) qty.value = 1 })
 
 // Toast
-const showToast = ref(false)
+/**
+ * Navigasi ke halaman /daftar dengan query param layanan pre-filled.
+ * Tidak langsung redirect ke WhatsApp agar tidak dianggap bridge page oleh Google Ads.
+ */
 function ambilAntrian() {
-  showToast.value = true
-  setTimeout(() => (showToast.value = false), 2200)
-
-  const message = `Halo Kak, saya tertarik untuk mengambil antrian pada produk "${product.value!.name}". Mohon informasinya, bagaimana cara untuk melanjutkan? Terima kasih!`
-
-  const waUrl = `https://wa.me/+6285121009692?text=${encodeURIComponent(message)}`
-
-  window.location.href = waUrl
+  router.push({
+    path: '/daftar',
+    query: { layanan: product.value!.name },
+  })
 }
 
 // Related
@@ -104,7 +100,13 @@ useHead({
         <div class="divider my-2"></div>
 
         <div class="flex flex-wrap items-end gap-3">
-          <button class="btn btn-primary" @click="ambilAntrian">Ambil Antrian</button>
+          <button
+            id="btn-ambil-antrian"
+            class="btn btn-primary"
+            @click="ambilAntrian"
+          >
+            🦷 Ambil Antrian
+          </button>
           <button class="btn btn-outline" @click="router.push('/products')">Kembali ke List</button>
         </div>
 

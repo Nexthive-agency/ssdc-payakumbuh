@@ -7,6 +7,10 @@
       <a href="/products" class="link link-hover">Product</a>
       <a href="#maps" class="link link-hover">Maps</a>
     </nav>
+    <nav class="grid grid-flow-col gap-4 text-xs opacity-70">
+      <NuxtLink to="/privacy-policy" class="link link-hover">Kebijakan Privasi</NuxtLink>
+      <NuxtLink to="/daftar" class="link link-hover">Daftar Konsultasi</NuxtLink>
+    </nav>
     <aside>
       <p>
         Copyright © 2025 - All right reserved by SSDC Payakumbuh

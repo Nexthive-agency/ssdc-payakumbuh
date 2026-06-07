@@ -8,6 +8,77 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
+
+  /**
+   * Security Headers via routeRules.
+   *
+   * Catatan CSP:
+   * - 'unsafe-inline' di script-src WAJIB karena Google Ads/Analytics
+   *   menggunakan inline script. Tanpa ini, gtag tidak akan berfungsi.
+   * - 'unsafe-inline' di style-src diperlukan untuk TailwindCSS v4 + DaisyUI
+   *   yang men-generate style secara inline saat runtime.
+   * - frame-src google.com diizinkan khusus untuk Google Maps embed.
+   * - HSTS aktif dengan max-age 1 tahun.
+   *   Pastikan HTTPS sudah stabil sebelum deploy ke production.
+   */
+  routeRules: {
+    "/**": {
+      headers: {
+        // ─── Content Security Policy ──────────────────────────────────────────
+        "Content-Security-Policy": [
+          // Default: hanya izinkan resource dari domain sendiri
+          "default-src 'self'",
+          // Script: inline diizinkan (gtag) + domain Google Ads & Analytics
+          "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com",
+          // Style: inline diizinkan (TailwindCSS / DaisyUI runtime)
+          "style-src 'self' 'unsafe-inline'",
+          // Gambar: domain sendiri, data URI, blob, dan tracking pixel Google
+          "img-src 'self' data: blob: https://ssdc.my.id https://www.google-analytics.com https://www.googletagmanager.com https://ssl.gstatic.com https://images.unsplash.com",
+          // Font: hanya domain sendiri dan data URI
+          "font-src 'self' data:",
+          // Koneksi jaringan: Google Analytics & Ads tracking
+          "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com https://region1.google-analytics.com",
+          // iframe: hanya Google Maps embed
+          "frame-src https://www.google.com",
+          // Worker: domain sendiri dan blob untuk Vite HMR di dev
+          "worker-src 'self' blob:",
+          // Blokir plugin lama (Flash, Silverlight, dll)
+          "object-src 'none'",
+          // Batasi <base> tag ke domain sendiri
+          "base-uri 'self'",
+          // Batasi action form – WA dibuka via window.open bukan form submit ke external
+          "form-action 'self'",
+          // Paksa semua resource pakai HTTPS
+          "upgrade-insecure-requests",
+        ].join("; "),
+
+        // ─── Anti-Clickjacking ────────────────────────────────────────────────
+        "X-Frame-Options": "SAMEORIGIN",
+
+        // ─── Anti-MIME Sniffing ───────────────────────────────────────────────
+        "X-Content-Type-Options": "nosniff",
+
+        // ─── Referrer Policy ──────────────────────────────────────────────────
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+
+        // ─── Permissions Policy ───────────────────────────────────────────────
+        "Permissions-Policy": [
+          "camera=()",
+          "microphone=()",
+          "payment=()",
+          "usb=()",
+          "geolocation=(self)",
+          "fullscreen=(self)",
+        ].join(", "),
+
+        // ─── HSTS ─────────────────────────────────────────────────────────────
+        // Paksa browser pakai HTTPS selama 1 tahun.
+        // ⚠ JANGAN aktifkan jika HTTPS belum stabil – bisa kunci domain!
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+      },
+    },
+  },
+
   app: {
     head: {
       title: "SSDC Senyum Sehat Dental Care Payakumbuh",
@@ -52,12 +123,14 @@ export default defineNuxtConfig({
           src: "https://www.googletagmanager.com/gtag/js?id=AW-16520213356",
         },
         {
+          // Inisiasi gtag - konversi event TIDAK dipanggil di sini.
+          // Event 'ads_conversion_Formulir_1' hanya dipanggil dari form handler di daftar.vue
+          // saat user benar-benar melakukan submit form (mencegah conversion fraud).
           innerHTML: `
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
-            gtag('config', 'AW-16520213356');
-            gtag('event', 'ads_conversion_Formulir_1', {});
+            gtag('config', 'AW-16520213356', { 'send_page_view': true });
           `,
         },
         {
@@ -103,5 +176,3 @@ export default defineNuxtConfig({
     },
   },
 });
-
-

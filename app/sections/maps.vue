@@ -55,7 +55,7 @@ import maskot2 from "~/assets/img/maskot2.png";
                 height="400"
                 allowFullScreen={true}
                 loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
+                referrerPolicy="strict-origin-when-cross-origin"
                 class="w-full h-[400px] border-0"
                 title="Lokasi SSDC Senyum Sehat Dental Care Payakumbuh"
               ></iframe>

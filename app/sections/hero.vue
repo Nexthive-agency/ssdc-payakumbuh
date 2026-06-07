@@ -9,13 +9,11 @@ import instagram from "~/assets/img/instagram.png";
 import facebook from "~/assets/img/facebook.png";
 import tiktok from "~/assets/img/tiktok.png";
 
-const whatsappUrl =
-    'https://wa.me/6285121009692?text=Halo%20SSDC%2C%20saya%20ingin%20mendaftar%20untuk%20konsultasi%2Fperawatan%20gigi.%0AMohon%20informasinya%20mengenai%20jadwal%20dan%20prosedur%20pendaftaran.%0ATerima%20kasih.'
-
 const instagramUrl = 'https://www.instagram.com/doktergigi.payakumbuh/'
 const facebookUrl = 'https://www.facebook.com/drgmunadiyah/?locale=id_ID'
 const tiktokUrl = 'https://www.tiktok.com/@doktergigi.payakumbuh'
 
+// --- Scroll Indicator ---
 const scrollToNextSection = () => {
     window.scrollTo({
         top: window.innerHeight,
@@ -61,7 +59,6 @@ onUnmounted(() => {
         <!-- Gradient gelap di kanan biar teks kebaca -->
         <div class="absolute bottom-0 right-0 w-full h-full gradient-right -z-10 hidden md:block" />
 
-
         <!-- Konten hero -->
         <div class="relative z-10 w-full">
             <div
@@ -87,12 +84,14 @@ onUnmounted(() => {
                     Drg. Munadiyah &amp; Partner
                 </div>
 
-                <!-- Tombol daftar WhatsApp -->
-                <div class="bg-white w-fit h-fit text-[#6E1A7E] px-10 py-2 rounded-full drop-shadow-lg">
-                    <a :href="whatsappUrl" target="_blank" rel="noopener noreferrer">
-                        <p class="font-bold">Daftar Sekarang</p>
-                    </a>
-                </div>
+                <!-- CTA button → menuju halaman /daftar -->
+                <NuxtLink
+                    to="/daftar"
+                    id="btn-cta-daftar-hero"
+                    class="bg-white w-fit h-fit text-[#6E1A7E] px-10 py-2 rounded-full drop-shadow-lg font-bold transition-transform duration-200 hover:scale-105 hover:shadow-xl"
+                >
+                    Daftar Sekarang
+                </NuxtLink>
 
                 <!-- Sosmed -->
                 <div class="flex items-center justify-center gap-4 mt-4">
@@ -119,6 +118,7 @@ onUnmounted(() => {
                 </div>
             </div>
         </div>
+
         <!-- Scroll Down Indicator -->
         <div v-if="showScrollIndicator"
             class="absolute bottom-32 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center animate-bounce cursor-pointer opacity-90 hover:opacity-100 transition-opacity duration-300"
@@ -131,8 +131,8 @@ onUnmounted(() => {
         </div>
     </section>
 </template>
+
 <style scoped>
-/* Global styles or inside scoped styles */
 .gradient-right {
     background: linear-gradient(to left, rgba(204, 0, 255, 0.8), rgba(255, 0, 255, 0) 70%);
 }

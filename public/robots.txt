@@ -1,2 +1,6 @@
 User-Agent: *
-Disallow:
+Allow: /
+Disallow: /_nuxt/
+Disallow: /api/
+
+Sitemap: https://ssdc.my.id/sitemap.xml
