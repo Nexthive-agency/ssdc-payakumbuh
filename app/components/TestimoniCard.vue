@@ -20,6 +20,10 @@ defineProps({
         :alt="`Sebelum: ${item.title}`"
         class="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500"
         :class="{ 'opacity-0': showAfter, 'opacity-100': !showAfter }"
+        loading="lazy"
+        decoding="async"
+        width="800"
+        height="256"
       />
       <div
         class="absolute inset-0 flex items-center justify-center text-white bg-black/40 transition-opacity duration-500"
@@ -33,6 +37,10 @@ defineProps({
         :alt="`Sesudah: ${item.title}`"
         class="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-500"
         :class="{ 'opacity-100': showAfter, 'opacity-0': !showAfter }"
+        loading="lazy"
+        decoding="async"
+        width="800"
+        height="256"
       />
       <div
         class="absolute inset-0 flex items-center justify-center text-white bg-[#6E1A7E]/60 transition-opacity duration-500"

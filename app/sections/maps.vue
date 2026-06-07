@@ -1,18 +1,19 @@
 <script setup>
-import overlay from "~/assets/img/overlay.png";
-import disiniTag from "~/assets/img/disini-tag.png";
-import logo from "~/assets/img/logo.png";
-import qrcode from "~/assets/img/qrcode.png";
-import maskot1 from "~/assets/img/maskot1.png";
-import maskot2 from "~/assets/img/maskot2.png";
+import overlay from "~/assets/img/webp/overlay.webp";
+import disiniTag from "~/assets/img/webp/disini-tag.webp";
+import logo from "~/assets/img/webp/logo.webp";
+import qrcode from "~/assets/img/webp/qrcode.webp";
+import maskot1 from "~/assets/img/webp/maskot1.webp";
+import maskot2 from "~/assets/img/webp/maskot2.webp";
 </script>
 <template>
   <section id="maps" style="background-color: #AD4CC2; color: white;" class="relative min-h-screen flex flex-col items-center justify-center px-6 py-16 overflow-hidden text-white">
         <img
           :src="overlay"
-          alt="Overlay"
-          width={1920}
-          height={1080}
+          alt="" aria-hidden="true"
+          width="1920"
+          height="1080"
+          loading="lazy"
           class="absolute inset-0 w-full h-full object-cover object-center opacity-10 pointer-events-none select-none -z-10"
         />
         <div class="max-w-6xl w-full grid lg:grid-cols-2 gap-10 items-center relative">
@@ -53,11 +54,11 @@ import maskot2 from "~/assets/img/maskot2.png";
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3989.7815929430785!2d100.62820577447748!3d-0.24584223537294264!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e2ab4cf792d0f9b%3A0x5b7b3167853c3c32!2sSSDC%20Senyum%20Sehat%20Dental%20Care%20Payakumbuh!5e0!3m2!1sid!2sid!4v1761482352922!5m2!1sid!2sid"
                 width="600"
                 height="400"
-                allowFullScreen={true}
+                allowfullscreen
                 loading="lazy"
-                referrerPolicy="strict-origin-when-cross-origin"
+                referrerpolicy="strict-origin-when-cross-origin"
                 class="w-full h-[400px] border-0"
-                title="Lokasi SSDC Senyum Sehat Dental Care Payakumbuh"
+                title="Lokasi SSDC Senyum Sehat Dental Care Payakumbuh di Google Maps"
               ></iframe>
             </div>
           </div>

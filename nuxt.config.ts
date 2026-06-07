@@ -28,25 +28,27 @@ export default defineNuxtConfig({
         "Content-Security-Policy": [
           // Default: hanya izinkan resource dari domain sendiri
           "default-src 'self'",
-          // Script: inline diizinkan (gtag) + domain Google Ads & Analytics
-          "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com",
-          // Style: inline diizinkan (TailwindCSS / DaisyUI runtime)
+          // Script: 'unsafe-inline' WAJIB untuk Nuxt hydration (window.__NUXT__)
+          // dan GTM inline initialization. JANGAN tambah 'strict-dynamic' karena
+          // akan override 'unsafe-inline' dan mematikan Vue hydration sepenuhnya.
+          "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://ssl.google-analytics.com https://googleads.g.doubleclick.net https://www.googleadservices.com",
+          // Style: inline diizinkan (TailwindCSS v4 / DaisyUI runtime)
           "style-src 'self' 'unsafe-inline'",
-          // Gambar: domain sendiri, data URI, blob, dan tracking pixel Google
-          "img-src 'self' data: blob: https://ssdc.my.id https://www.google-analytics.com https://www.googletagmanager.com https://ssl.gstatic.com https://images.unsplash.com",
+          // Gambar: domain sendiri, data URI, blob, tracking pixel Google, dan loccal Google Maps tiles
+          "img-src 'self' data: blob: https://ssdc.my.id https://www.google-analytics.com https://www.googletagmanager.com https://ssl.gstatic.com https://images.unsplash.com https://maps.googleapis.com https://maps.gstatic.com https://lh3.googleusercontent.com",
           // Font: hanya domain sendiri dan data URI
           "font-src 'self' data:",
-          // Koneksi jaringan: Google Analytics & Ads tracking
-          "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com https://region1.google-analytics.com",
-          // iframe: hanya Google Maps embed
-          "frame-src https://www.google.com",
+          // Koneksi jaringan: Google Analytics, Ads, Maps tracking
+          "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://stats.g.doubleclick.net https://www.googletagmanager.com https://region1.google-analytics.com https://maps.googleapis.com",
+          // iframe: Google Maps embed
+          "frame-src https://www.google.com https://www.googletagmanager.com",
           // Worker: domain sendiri dan blob untuk Vite HMR di dev
           "worker-src 'self' blob:",
           // Blokir plugin lama (Flash, Silverlight, dll)
           "object-src 'none'",
           // Batasi <base> tag ke domain sendiri
           "base-uri 'self'",
-          // Batasi action form – WA dibuka via window.open bukan form submit ke external
+          // Batasi action form
           "form-action 'self'",
           // Paksa semua resource pakai HTTPS
           "upgrade-insecure-requests",
@@ -80,6 +82,7 @@ export default defineNuxtConfig({
   },
 
   app: {
+    htmlAttrs: { lang: "id" },
     head: {
       title: "SSDC Senyum Sehat Dental Care Payakumbuh",
       meta: [
@@ -105,7 +108,10 @@ export default defineNuxtConfig({
           content:
             "Layanan dokter gigi terpercaya di Payakumbuh & Lima Puluh Kota. Perawatan gigi lengkap untuk senyum sehat dan percaya diri.",
         },
-        { property: "og:image", content: "https://ssdc.my.id/ssdc_logo.jpg" },
+        { property: "og:image", content: "https://ssdc.my.id/og-image.jpg" },
+        { property: "og:image:width", content: "1200" },
+        { property: "og:image:height", content: "630" },
+        { property: "og:image:alt", content: "SSDC Senyum Sehat Dental Care Payakumbuh – Klinik Gigi Terpercaya" },
         {
           property: "og:see_also",
           content: "https://www.tiktok.com/@doktergigi.payakumbuh",
@@ -116,32 +122,32 @@ export default defineNuxtConfig({
         },
         { property: "og:see_also", content: "https://wa.me/6285121009692" },
       ],
-      link: [{ rel: "icon", type: "image/png", href: "ssdc_logo.jpg" }],
+      link: [
+        { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+        { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
+        { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
+        // Preload hero image — LCP element, browser fetch lebih awal sebelum render
+        // Catatan: path ini adalah hash yang di-generate Vite, gunakan preconnect sebagai alternatif
+        // yang lebih aman saat file sudah di-bundle dengan hash name
+        { rel: "preconnect", href: "https://www.googletagmanager.com" },
+        { rel: "preconnect", href: "https://www.google-analytics.com" },
+        // dns-prefetch sebagai fallback browser lama
+        { rel: "dns-prefetch", href: "https://www.googletagmanager.com" },
+        { rel: "dns-prefetch", href: "https://www.google-analytics.com" },
+        { rel: "canonical", href: "https://ssdc.my.id/" },
+      ],
       script: [
-        {
-          async: true,
-          src: "https://www.googletagmanager.com/gtag/js?id=AW-16520213356",
-        },
-        {
-          // Inisiasi gtag - konversi event TIDAK dipanggil di sini.
-          // Event 'ads_conversion_Formulir_1' hanya dipanggil dari form handler di daftar.vue
-          // saat user benar-benar melakukan submit form (mencegah conversion fraud).
-          innerHTML: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'AW-16520213356', { 'send_page_view': true });
-          `,
-        },
+        // GTM diload via lazy-gtm.client.ts plugin setelah user interaksi
+        // (tidak diload di sini agar tidak blokir LCP/TBT di mobile)
         {
           type: "application/ld+json",
           innerHTML: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Dentist",
             name: "SSDC Senyum Sehat Dental Care Payakumbuh",
-            image: "https://ssdc.my.id/image/logo.png",
+            image: "https://ssdc.my.id/ssdc_logo.jpg",
             url: "https://ssdc.my.id/",
-            telephone: "085121009692",
+            telephone: "+62-851-2100-9692",
             address: {
               "@type": "PostalAddress",
               streetAddress: "Jl. Pahlawan No. 86A, Payakumbuh",
@@ -167,7 +173,7 @@ export default defineNuxtConfig({
             sameAs: [
               "https://www.tiktok.com/@doktergigi.payakumbuh",
               "https://www.instagram.com/doktergigi.payakumbuh/",
-              "https://wa.me/6285121009692",
+              "https://www.facebook.com/drgmunadiyah/",
               "https://www.google.com/maps/place/SSDC+Senyum+Sehat+Dental+Care+Payakumbuh/@-0.2458378,100.6287674,17.29z/data=!4m14!1m7!3m6!1s0x2e2ab4cf792d0f9b:0x5b7b3167853c3c32!2sSSDC+Senyum+Sehat+Dental+Care+Payakumbuh!8m2!3d-0.2458476!4d100.6307807!16s%2Fg%2F11c2lct3fq!3m5!1s0x2e2ab4cf792d0f9b:0x5b7b3167853c3c32!8m2!3d-0.2458476!4d100.6307807!16s%2Fg%2F11c2lct3fq?hl=id&authuser=1&entry=ttu&g_ep=EgoyMDI1MTAxNC4wIKXMDSoASAFQAw%3D%3D",
             ],
           }),

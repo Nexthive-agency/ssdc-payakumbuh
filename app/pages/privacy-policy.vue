@@ -10,10 +10,20 @@ useHead({
         'Kebijakan Privasi SSDC Senyum Sehat Dental Care Payakumbuh. Informasi mengenai cara kami mengumpulkan, menggunakan, dan melindungi data pribadi Anda.',
     },
     { name: 'robots', content: 'index, follow' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://ssdc.my.id/privacy-policy' },
+    { property: 'og:title', content: 'Kebijakan Privasi – SSDC Senyum Sehat Dental Care Payakumbuh' },
+    { property: 'og:description', content: 'Kebijakan Privasi SSDC Senyum Sehat Dental Care Payakumbuh mengenai pengumpulan, penggunaan, dan perlindungan data pribadi Anda.' },
+    { property: 'og:image', content: 'https://ssdc.my.id/og-image.jpg' },
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://ssdc.my.id/privacy-policy' },
   ],
 })
 
+// Format display (bahasa Indonesia) dan ISO 8601 (untuk machine-readable datetime attribute)
 const lastUpdated = '1 Juni 2025'
+const lastUpdatedISO = '2025-06-01'
 const clinicName = 'SSDC Senyum Sehat Dental Care Payakumbuh'
 const clinicEmail = 'ssdc.payakumbuh@gmail.com'
 const clinicAddress = 'Jl. Pahlawan No. 86A, Sawah Padang, Payakumbuh Selatan, Kota Payakumbuh, Sumatera Barat 26222'
@@ -45,7 +55,7 @@ const siteUrl = 'https://ssdc.my.id'
         Kebijakan Privasi
       </h1>
       <p class="mt-2 text-sm text-gray-500">
-        Terakhir diperbarui: <time :datetime="lastUpdated">{{ lastUpdated }}</time>
+        Terakhir diperbarui: <time :datetime="lastUpdatedISO">{{ lastUpdated }}</time>
       </p>
     </div>
 

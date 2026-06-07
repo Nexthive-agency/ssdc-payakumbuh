@@ -1,13 +1,14 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
-import bgHero from "~/assets/img/bg-hero.jpg";
-import overlay from "~/assets/img/overlay.png";
-import keluarga from "~/assets/img/keluarga.png";
-import logo from "~/assets/img/logo.png";
-import bgButton1 from "~/assets/img/bg-button1.png";
-import instagram from "~/assets/img/instagram.png";
-import facebook from "~/assets/img/facebook.png";
-import tiktok from "~/assets/img/tiktok.png";
+import bgHero from "~/assets/img/webp/bg-hero.webp";
+import bgHeroMobile from "~/assets/img/webp/bg-hero-mobile.webp";
+import overlay from "~/assets/img/webp/overlay.webp";
+import keluarga from "~/assets/img/webp/keluarga.webp";
+import logo from "~/assets/img/webp/logo.webp";
+import bgButton1 from "~/assets/img/webp/bg-button1.webp";
+import instagram from "~/assets/img/webp/instagram.webp";
+import facebook from "~/assets/img/webp/facebook.webp";
+import tiktok from "~/assets/img/webp/tiktok.webp";
 
 const instagramUrl = 'https://www.instagram.com/doktergigi.payakumbuh/'
 const facebookUrl = 'https://www.facebook.com/drgmunadiyah/?locale=id_ID'
@@ -42,13 +43,21 @@ onUnmounted(() => {
 
 <template>
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <!-- Background utama -->
-        <img :src="bgHero" width="1920" height="1080" alt="Background Klinik Gigi SSDC Payakumbuh"
-            class="absolute inset-0 w-full h-full object-cover object-center -z-30" />
+        <!-- Background utama — LCP element, fetchpriority=high agar browser load duluan -->
+        <!-- picture: mobile (<768px) serve 8KB hero, desktop serve 28KB hero -->
+        <picture>
+            <source media="(max-width: 767px)" :srcset="bgHeroMobile" type="image/webp">
+            <img :src="bgHero" width="1920" height="1080"
+                alt="Suasana Klinik Gigi SSDC Senyum Sehat Dental Care Payakumbuh"
+                fetchpriority="high"
+                class="absolute inset-0 w-full h-full object-cover object-center -z-30" />
+        </picture>
 
-        <!-- Overlay dekorasi -->
-        <img :src="overlay" width="1920" height="1080" alt="Overlay"
-            class="absolute inset-0 w-full h-full object-cover object-center z-10 pointer-events-none select-none opacity-10" />
+        <!-- Overlay dekorasi — aria-hidden karena murni visual, tidak ada informasi konten -->
+        <!-- loading=lazy: overlay tidak boleh jadi LCP element, biarkan browser skip ini -->
+        <img :src="overlay" width="1920" height="1080" alt="" aria-hidden="true"
+            loading="lazy"
+            class="absolute inset-0 w-full h-full object-cover object-center opacity-10 pointer-events-none select-none -z-20" />
 
         <!-- Ilustrasi keluarga / maskot (desktop only) -->
         <div class="absolute bottom-0 left-0 z-20 hidden lg:block lg:w-[50%] xl:w-[50%]">
@@ -56,8 +65,11 @@ onUnmounted(() => {
                 loading="eager" class="object-contain w-full h-auto select-none pointer-events-none" />
         </div>
 
-        <!-- Gradient gelap di kanan biar teks kebaca -->
+        <!-- Gradient gelap di kanan biar teks kebaca (desktop) -->
         <div class="absolute bottom-0 right-0 w-full h-full gradient-right -z-10 hidden md:block" />
+
+        <!-- Dark overlay khusus mobile untuk kontras teks (keluarga.png tidak tampil di mobile) -->
+        <div class="absolute inset-0 -z-10 bg-black/25 md:hidden" aria-hidden="true" />
 
         <!-- Konten hero -->
         <div class="relative z-10 w-full">
@@ -93,26 +105,28 @@ onUnmounted(() => {
                     Daftar Sekarang
                 </NuxtLink>
 
-                <!-- Sosmed -->
-                <div class="flex items-center justify-center gap-4 mt-4">
+                <div class="flex items-center justify-center gap-4 mt-4" role="list" aria-label="Media sosial SSDC">
                     <!-- Instagram -->
-                    <a :href="instagramUrl" target="_blank" rel="noopener noreferrer" aria-label="Instagram SSDC"
+                    <a :href="instagramUrl" target="_blank" rel="noopener noreferrer" aria-label="Ikuti SSDC di Instagram"
+                        role="listitem"
                         class="transition-transform duration-200 hover:scale-110">
-                        <img :src="instagram" width="45" height="45" alt="Logo Instagram resmi SSDC" loading="eager"
+                        <img :src="instagram" width="45" height="45" alt="" aria-hidden="true" loading="lazy"
                             class="w-[45px] h-[45px] object-contain" />
                     </a>
 
                     <!-- Facebook -->
-                    <a :href="facebookUrl" target="_blank" rel="noopener noreferrer" aria-label="Facebook SSDC"
+                    <a :href="facebookUrl" target="_blank" rel="noopener noreferrer" aria-label="Ikuti SSDC di Facebook"
+                        role="listitem"
                         class="transition-transform duration-200 hover:scale-110">
-                        <img :src="facebook" width="45" height="45" alt="Logo Facebook resmi SSDC" loading="eager"
+                        <img :src="facebook" width="45" height="45" alt="" aria-hidden="true" loading="lazy"
                             class="w-[45px] h-[45px] object-contain" />
                     </a>
 
                     <!-- TikTok -->
-                    <a :href="tiktokUrl" target="_blank" rel="noopener noreferrer" aria-label="TikTok SSDC"
+                    <a :href="tiktokUrl" target="_blank" rel="noopener noreferrer" aria-label="Tonton SSDC di TikTok"
+                        role="listitem"
                         class="transition-transform duration-200 hover:scale-110">
-                        <img :src="tiktok" width="45" height="45" alt="Logo TikTok resmi SSDC" loading="eager"
+                        <img :src="tiktok" width="45" height="45" alt="" aria-hidden="true" loading="lazy"
                             class="w-[45px] h-[45px] object-contain" />
                     </a>
                 </div>
@@ -121,10 +135,16 @@ onUnmounted(() => {
 
         <!-- Scroll Down Indicator -->
         <div v-if="showScrollIndicator"
+            role="button"
+            tabindex="0"
+            aria-label="Gulir ke bawah untuk melihat konten selanjutnya"
             class="absolute bottom-32 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center animate-bounce cursor-pointer opacity-90 hover:opacity-100 transition-opacity duration-300"
-            @click="scrollToNextSection">
+            @click="scrollToNextSection"
+            @keydown.enter.space.prevent="scrollToNextSection">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="size-6 w-10 h-10 text-white drop-shadow-md">
+                stroke="currentColor" class="size-6 w-10 h-10 text-white drop-shadow-md"
+                aria-hidden="true">
+                <title>Gulir ke bawah</title>
                 <path stroke-linecap="round" stroke-linejoin="round"
                     d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5" />
             </svg>

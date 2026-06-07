@@ -38,15 +38,31 @@ function ambilAntrian() {
 // Related
 const related = computed(() => byCategory(product.value!.category, product.value!.slug).slice(0, 4))
 
-// SEO
+// SEO — title menyertakan brand + lokasi, OG tags lengkap untuk share preview
 useHead({
-  title: `${product.value!.name} – Products`,
+  title: `${product.value!.name} \u2013 SSDC Senyum Sehat Dental Care Payakumbuh`,
   meta: [
-    { name: 'description', content: product.value!.description || product.value!.name },
-    { property: 'og:title', content: product.value!.name },
+    {
+      name: 'description',
+      content: product.value!.description
+        ? `${product.value!.description.slice(0, 155)}...`
+        : `Layanan ${product.value!.name} di SSDC Senyum Sehat Dental Care Payakumbuh. Daftar konsultasi gratis via WhatsApp.`,
+    },
+    { property: 'og:title', content: `${product.value!.name} \u2013 SSDC Payakumbuh` },
     { property: 'og:type', content: 'product' },
-    { property: 'og:image', content: product.value!.image },
-  ]
+    { property: 'og:url', content: `https://ssdc.my.id/products/${product.value!.slug}` },
+    {
+      property: 'og:description',
+      content: product.value!.description || `Layanan ${product.value!.name} berkualitas di SSDC Payakumbuh.`,
+    },
+    { property: 'og:image', content: product.value!.image || 'https://ssdc.my.id/og-image.jpg' },
+    { property: 'og:image:width', content: '800' },
+    { property: 'og:image:height', content: '600' },
+    { property: 'og:image:alt', content: product.value!.name },
+  ],
+  link: [
+    { rel: 'canonical', href: `https://ssdc.my.id/products/${product.value!.slug}` },
+  ],
 })
 </script>
 

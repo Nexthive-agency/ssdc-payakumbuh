@@ -4,7 +4,7 @@
   >
     <nav class="grid grid-flow-col gap-4">
       <a href="#testimoni" class="link link-hover">Testimoni</a>
-      <a href="/products" class="link link-hover">Product</a>
+      <NuxtLink to="/products" class="link link-hover">Layanan</NuxtLink>
       <a href="#maps" class="link link-hover">Maps</a>
     </nav>
     <nav class="grid grid-flow-col gap-4 text-xs opacity-70">

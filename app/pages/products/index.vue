@@ -20,14 +20,34 @@ const maxPrice = ref<number>(Number(route.query.max ?? 20000000))
 const page = ref<number>(Number(route.query.page ?? 1))
 const pageSize = ref<number>(12)
 
-// SEO (optimized for better search engine visibility)
+// SEO — title menyertakan nama klinik + lokasi untuk local search intent
 useHead({
-  title: 'Daftar Produk Kesehatan Gigi – Toko Dokter Gigi Terpercaya',
+  title: 'Layanan Perawatan Gigi Lengkap \u2013 SSDC Senyum Sehat Dental Care Payakumbuh',
   meta: [
-    { name: 'description', content: 'Temukan berbagai layanan perawatan gigi terbaik di Toko Dokter Gigi kami. Dapatkan pemutihan gigi, pembersihan karang gigi, dan perawatan lainnya untuk senyuman yang lebih sehat!' },
-    { name: 'keywords', content: 'dokter gigi, pemutihan gigi, pembersihan karang gigi, perawatan saluran akar, perawatan gigi, kesehatan gigi, scaling, whitening' },
-    { name: 'robots', content: 'index, follow' }
-  ]
+    {
+      name: 'description',
+      content: 'Temukan layanan perawatan gigi lengkap di SSDC Payakumbuh: scaling, behel, bleaching, veneer, crown, tambal gigi, dan perawatan anak. Konsultasi gratis via WhatsApp.',
+    },
+    {
+      name: 'keywords',
+      content: 'dokter gigi Payakumbuh, scaling gigi Payakumbuh, behel gigi Payakumbuh, bleaching gigi, veneer gigi, cabut gigi, perawatan saluran akar, klinik gigi Lima Puluh Kota',
+    },
+    { name: 'robots', content: 'index, follow' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:url', content: 'https://ssdc.my.id/products' },
+    { property: 'og:title', content: 'Layanan Perawatan Gigi \u2013 SSDC Senyum Sehat Dental Care Payakumbuh' },
+    {
+      property: 'og:description',
+      content: 'Layanan dokter gigi lengkap di Payakumbuh: scaling, behel, bleaching, veneer, crown, tambal gigi, dan lebih banyak lagi. Daftar konsultasi gratis sekarang!',
+    },
+    { property: 'og:image', content: 'https://ssdc.my.id/og-image.jpg' },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '630' },
+    { property: 'og:image:alt', content: 'Layanan Perawatan Gigi SSDC Payakumbuh' },
+  ],
+  link: [
+    { rel: 'canonical', href: 'https://ssdc.my.id/products' },
+  ],
 })
 
 function syncQuery () {
@@ -127,47 +147,38 @@ onMounted(() => {
 
     <!-- Sticky Toolbar -->
     <div class="mt-6 md:sticky md:top-14 md:z-10 bg-base-100/80 backdrop-blur supports-[backdrop-filter]:bg-base-100/60 rounded-xl border border-base-300 p-3 md:p-4">
-      <div class="grid grid-cols-1 gap-3 md:grid-cols-12 md:items-end">
+
+      <!-- Baris 1: Search + Sort + Filter Harga -->
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
         <!-- Search -->
-        <label class="input input-bordered flex items-center gap-2 md:col-span-5">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 opacity-60" viewBox="0 0 24 24" fill="currentColor"><path d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 5.5 5.5a7.5 7.5 0 0 0 11.15 11.15Z"/></svg>
-          <input ref="searchEl" v-model="q" @input="applyFiltersDebounced" @keyup.enter="applyFiltersImmediate" type="text" class="grow" placeholder="Cari produk, tag..." aria-label="Cari produk" />
-          <button class="btn btn-sm" @click="applyFiltersImmediate">Cari</button>
+        <label class="input input-bordered flex items-center gap-2 flex-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-60 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 5.5 5.5a7.5 7.5 0 0 0 11.15 11.15Z"/></svg>
+          <input ref="searchEl" v-model="q" @input="applyFiltersDebounced" @keyup.enter="applyFiltersImmediate"
+            type="text" class="grow min-w-0" placeholder="Cari layanan..." aria-label="Cari produk" />
         </label>
 
-        <!-- Categories Tabs (scrollable on small) -->
-        <div class="md:col-span-3 overflow-x-auto no-scrollbar">
-          <div class="tabs tabs-boxed w-max md:w-full">
-            <button v-for="c in categories" :key="c" type="button"
-              class="tab whitespace-nowrap"
-              :class="{ 'tab-active': category===c }"
-              @click="category = c; applyFiltersImmediate()">{{ c }}</button>
-          </div>
-        </div>
-
-        <!-- Sorter -->
-        <label class="form-control md:col-span-2">
-          <select v-model="sortBy" class="select select-bordered" @change="applyFiltersImmediate" aria-label="Urutkan produk">
+        <!-- Sort + Filter row (compact di mobile) -->
+        <div class="flex gap-2 shrink-0">
+          <select v-model="sortBy" class="select select-bordered select-sm flex-1 sm:flex-none" @change="applyFiltersImmediate" aria-label="Urutkan produk">
             <option value="popular">Terpopuler</option>
-            <option value="rating">Rating</option>
-            <option value="price_asc">Harga: Murah → Mahal</option>
-            <option value="price_desc">Harga: Mahal → Murah</option>
+            <option value="price_asc">Murah dulu</option>
+            <option value="price_desc">Mahal dulu</option>
           </select>
-        </label>
 
-        <!-- Price Filter -->
-        <div class="md:col-span-2">
-          <div class="dropdown dropdown-end w-full">
-            <div tabindex="0" role="button" class="btn btn-outline w-full">Filter Harga</div>
-            <div tabindex="0" class="dropdown-content z-[1] card card-compact bg-base-100 w-80 p-4 shadow">
+          <div class="dropdown dropdown-end">
+            <div tabindex="0" role="button" class="btn btn-outline btn-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
+              Harga
+            </div>
+            <div tabindex="0" class="dropdown-content z-[1] card card-compact bg-base-100 w-72 p-4 shadow">
               <div class="grid grid-cols-2 gap-3">
                 <label class="form-control">
                   <div class="label"><span class="label-text">Min</span></div>
-                  <input v-model.number="minPrice" type="number" class="input input-bordered" min="0" step="1000" />
+                  <input v-model.number="minPrice" type="number" class="input input-bordered input-sm" min="0" step="1000" />
                 </label>
                 <label class="form-control">
                   <div class="label"><span class="label-text">Max</span></div>
-                  <input v-model.number="maxPrice" type="number" class="input input-bordered" min="0" step="1000" />
+                  <input v-model.number="maxPrice" type="number" class="input input-bordered input-sm" min="0" step="1000" />
                 </label>
               </div>
               <div class="mt-3 flex justify-between items-center">
@@ -179,8 +190,22 @@ onMounted(() => {
         </div>
       </div>
 
+      <!-- Baris 2: Kategori horizontal scroll -->
+      <div class="mt-2 relative">
+        <!-- Fade indicator kanan supaya user tahu ada scroll -->
+        <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-base-100/90 to-transparent pointer-events-none z-10 rounded-r-lg" aria-hidden="true"></div>
+        <div class="overflow-x-auto no-scrollbar pb-1">
+          <div class="flex gap-1.5 w-max">
+            <button v-for="c in categories" :key="c" type="button"
+              class="btn btn-xs rounded-full whitespace-nowrap"
+              :class="category === c ? 'btn-primary bg-[#6E1A7E] border-none text-white' : 'btn-ghost border border-base-300'"
+              @click="category = c; applyFiltersImmediate()">{{ c === 'All' ? 'Semua' : c }}</button>
+          </div>
+        </div>
+      </div>
+
       <!-- Active filter chips -->
-      <div class="mt-3 flex flex-wrap gap-2 text-xs">
+      <div class="mt-2 flex flex-wrap gap-2 text-xs">
         <span v-if="q" class="badge badge-ghost gap-1">Kata kunci: <span class="font-medium">"{{ q }}"</span>
           <button class="btn btn-ghost btn-xs" @click="q=''; applyFiltersImmediate()" aria-label="Hapus kata kunci">✕</button>
         </span>

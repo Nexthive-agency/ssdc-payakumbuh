@@ -1,14 +1,14 @@
 <script setup>
-import { ref, onMounted, computed, nextTick } from 'vue';
+import { ref, onMounted, onUnmounted, computed, nextTick } from 'vue';
 
-import bridgeSebelum from '~/assets/beforAfterImage/bridge_gigi_depan_befor.jpeg';
-import bridgeSetelah from '~/assets/beforAfterImage/bridge_gigi_depanAfter.jpeg';
-import crownSebelum from '~/assets/beforAfterImage/Crown_gigi_belakang_sebelum.jpeg';
-import crownSetelah from '~/assets/beforAfterImage/Crown_gigi_belakang_sesudah.jpeg';
-import skelingSebelum from '~/assets/beforAfterImage/skeling_gigi_sebelum.jpeg';
-import skelingSesudah from '~/assets/beforAfterImage/skeling_gigi_sesudah.jpeg';
-import tambalResinSebelum from '~/assets/beforAfterImage/tambal_serin_komposit_sebelum.jpeg';
-import tambalResinSesudah from '~/assets/beforAfterImage/tambal_resin_komposit_sesudah.jpeg';
+import bridgeSebelum from '~/assets/beforAfterImage/bridge_gigi_depan_befor.webp';
+import bridgeSetelah from '~/assets/beforAfterImage/bridge_gigi_depanAfter.webp';
+import crownSebelum from '~/assets/beforAfterImage/Crown_gigi_belakang_sebelum.webp';
+import crownSetelah from '~/assets/beforAfterImage/Crown_gigi_belakang_sesudah.webp';
+import skelingSebelum from '~/assets/beforAfterImage/skeling_gigi_sebelum.webp';
+import skelingSesudah from '~/assets/beforAfterImage/skeling_gigi_sesudah.webp';
+import tambalResinSebelum from '~/assets/beforAfterImage/tambal_serin_komposit_sebelum.webp';
+import tambalResinSesudah from '~/assets/beforAfterImage/tambal_resin_komposit_sesudah.webp';
 
 import TestimoniCard from '~/components/TestimoniCard.vue';
 
@@ -50,9 +50,13 @@ const displayCases = computed(() => [...originalCases, ...originalCases, ...orig
 const showAfter = ref(false);
 const carouselContainer = ref(null);
 
+// Simpan intervalId agar bisa dibersihkan saat komponen di-unmount (mencegah memory leak)
+/** @type {ReturnType<typeof setInterval> | null} */
+let intervalId = null;
+
 // Change the image every 3 seconds
 onMounted(async () => {
-    setInterval(() => {
+    intervalId = setInterval(() => {
         showAfter.value = !showAfter.value;
     }, 3000); // Change every 3 seconds
 
@@ -62,6 +66,14 @@ onMounted(async () => {
         // Calculate scroll width of one set
         const oneSetWidth = carouselContainer.value.scrollWidth / 3;
         carouselContainer.value.scrollLeft = oneSetWidth;
+    }
+});
+
+// Bersihkan interval saat komponen di-unmount
+onUnmounted(() => {
+    if (intervalId !== null) {
+        clearInterval(intervalId);
+        intervalId = null;
     }
 });
 
@@ -156,19 +168,24 @@ const scroll = (direction) => {
             </div>
         </div>
 
-        <!-- Global Navigation Buttons -->
+        <!-- Global Navigation Buttons — hanya tampil di md ke atas -->
         <button 
             @click="scroll('left')" 
-            class="absolute left-0 top-1/2 -translate-y-1/2 btn btn-circle btn-primary bg-[#6E1A7E] border-none text-white shadow-lg opacity-70 hover:opacity-100 z-10 -ml-2 md:-ml-5 flex"
+            class="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 btn btn-circle btn-primary bg-[#6E1A7E] border-none text-white shadow-lg opacity-70 hover:opacity-100 z-10 -ml-5"
             aria-label="Previous Slide">
             ❮
         </button>
         <button 
             @click="scroll('right')" 
-            class="absolute right-0 top-1/2 -translate-y-1/2 btn btn-circle btn-primary bg-[#6E1A7E] border-none text-white shadow-lg opacity-70 hover:opacity-100 z-10 -mr-2 md:-mr-5 flex"
+            class="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 btn btn-circle btn-primary bg-[#6E1A7E] border-none text-white shadow-lg opacity-70 hover:opacity-100 z-10 -mr-5"
             aria-label="Next Slide">
             ❯
         </button>
+
+        <!-- Swipe hint — hanya tampil di mobile -->
+        <p class="md:hidden mt-3 text-center text-xs text-[#6E1A7E]/60 select-none" aria-hidden="true">
+          ← Geser untuk melihat lebih →
+        </p>
       </div>
       
 
