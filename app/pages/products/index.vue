@@ -4,14 +4,39 @@ import { useRoute, useRouter, useHead } from '#imports'
 
 import { useProducts, type Product } from '~/composables/useProducts'
 
-const { products, rupiah } = useProducts()
+const { products, rupiah, rupiahRange } = useProducts()
 
 // Router state
 const router = useRouter()
 const route = useRoute()
 
 // Query-bound filter states
-const categories = ['All','scaling','whitening','checkup','root-canal', 'crown', 'xrays', 'fillings'] as const
+const categories = [
+  'All',
+  'scaling',
+  'fillings',
+  'root-canal',
+  'extraction',
+  'aesthetic',
+  'whitening',
+  'orthodontics',
+  'crown',
+  'xrays',
+] as const
+
+/** Label kategori dalam Bahasa Indonesia untuk ditampilkan di tombol filter */
+const categoryLabels: Record<string, string> = {
+  'All':          'Semua',
+  'scaling':      'Scaling',
+  'fillings':     'Tambal Gigi',
+  'root-canal':   'Saluran Akar',
+  'extraction':   'Pencabutan',
+  'aesthetic':    'Estetika',
+  'whitening':    'Bleaching',
+  'orthodontics': 'Ortodonti',
+  'crown':        'Crown & Gigi Palsu',
+  'xrays':        'Rontgen',
+}
 const q = ref<string>((route.query.q as string) || '')
 const category = ref<string>((route.query.cat as string) || 'All')
 const sortBy = ref<string>((route.query.sort as string) || 'popular')
@@ -149,17 +174,17 @@ onMounted(() => {
     <div class="mt-6 md:sticky md:top-14 md:z-10 bg-base-100/80 backdrop-blur supports-[backdrop-filter]:bg-base-100/60 rounded-xl border border-base-300 p-3 md:p-4">
 
       <!-- Baris 1: Search + Sort + Filter Harga -->
-      <div class="flex flex-col gap-2 sm:flex-row sm:items-center">
+      <div class="grid gap-2 items-center grid-cols-1 sm:grid-cols-[1fr_auto]">
         <!-- Search -->
-        <label class="input input-bordered flex items-center gap-2 flex-1">
+        <label class="input input-bordered flex items-center gap-2 w-full">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-60 shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M21 21l-4.35-4.35m0 0A7.5 7.5 0 1 0 5.5 5.5a7.5 7.5 0 0 0 11.15 11.15Z"/></svg>
           <input ref="searchEl" v-model="q" @input="applyFiltersDebounced" @keyup.enter="applyFiltersImmediate"
             type="text" class="grow min-w-0" placeholder="Cari layanan..." aria-label="Cari produk" />
         </label>
 
-        <!-- Sort + Filter row (compact di mobile) -->
-        <div class="flex gap-2 shrink-0">
-          <select v-model="sortBy" class="select select-bordered select-sm flex-1 sm:flex-none" @change="applyFiltersImmediate" aria-label="Urutkan produk">
+        <!-- Sort + Filter Harga -->
+        <div class="flex gap-2 items-center">
+          <select v-model="sortBy" class="select select-bordered select-sm" @change="applyFiltersImmediate" aria-label="Urutkan produk">
             <option value="popular">Terpopuler</option>
             <option value="price_asc">Murah dulu</option>
             <option value="price_desc">Mahal dulu</option>
@@ -170,19 +195,21 @@ onMounted(() => {
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2a1 1 0 01-.293.707L13 13.414V19a1 1 0 01-.553.894l-4 2A1 1 0 017 21v-7.586L3.293 6.707A1 1 0 013 6V4z"/></svg>
               Harga
             </div>
-            <div tabindex="0" class="dropdown-content z-[1] card card-compact bg-base-100 w-72 p-4 shadow">
+            <div tabindex="0" class="dropdown-content z-[200] mt-2 card card-compact bg-base-100 w-72 p-4 shadow-lg border border-base-300">
               <div class="grid grid-cols-2 gap-3">
                 <label class="form-control">
-                  <div class="label"><span class="label-text">Min</span></div>
-                  <input v-model.number="minPrice" type="number" class="input input-bordered input-sm" min="0" step="1000" />
+                  <div class="label"><span class="label-text">Min (Rp)</span></div>
+                  <input v-model.number="minPrice" type="number" class="input input-bordered input-sm w-full" min="0" step="50000" placeholder="0" />
                 </label>
                 <label class="form-control">
-                  <div class="label"><span class="label-text">Max</span></div>
-                  <input v-model.number="maxPrice" type="number" class="input input-bordered input-sm" min="0" step="1000" />
+                  <div class="label"><span class="label-text">Max (Rp)</span></div>
+                  <input v-model.number="maxPrice" type="number" class="input input-bordered input-sm w-full" min="0" step="50000" placeholder="20000000" />
                 </label>
               </div>
-              <div class="mt-3 flex justify-between items-center">
-                <span class="text-xs opacity-70">{{ rupiah(minPrice) }} – {{ rupiah(maxPrice) }}</span>
+              <div class="mt-2 text-xs opacity-60 truncate">
+                {{ rupiah(minPrice) }} – {{ rupiah(maxPrice) }}
+              </div>
+              <div class="mt-2 flex justify-end">
                 <button class="btn btn-primary btn-sm" @click="applyFiltersImmediate">Terapkan</button>
               </div>
             </div>
@@ -199,7 +226,7 @@ onMounted(() => {
             <button v-for="c in categories" :key="c" type="button"
               class="btn btn-xs rounded-full whitespace-nowrap"
               :class="category === c ? 'btn-primary bg-[#6E1A7E] border-none text-white' : 'btn-ghost border border-base-300'"
-              @click="category = c; applyFiltersImmediate()">{{ c === 'All' ? 'Semua' : c }}</button>
+              @click="category = c; applyFiltersImmediate()">{{ categoryLabels[c] ?? c }}</button>
           </div>
         </div>
       </div>
@@ -250,7 +277,7 @@ onMounted(() => {
             <div v-for="t in p.tags" :key="t" class="badge badge-outline badge-sm">{{ t }}</div>
           </div>
 
-          <div class="mt-1 text-lg font-bold">{{ rupiah(p.price) }}</div>
+          <div class="mt-1 text-lg font-bold">{{ rupiahRange(p) }}</div>
 
           <div class="card-actions mt-2 items-center justify-between">
             <NuxtLink :to="`/products/${p.slug}`" class="btn btn-sm">Detail</NuxtLink>
