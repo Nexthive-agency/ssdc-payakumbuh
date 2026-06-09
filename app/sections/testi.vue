@@ -1,5 +1,6 @@
 <script setup>
-import { ref, onMounted, onUnmounted, computed, nextTick } from 'vue';
+import { ref, onMounted, onUnmounted, computed } from 'vue';
+import EmblaCarousel from 'embla-carousel';
 
 import bridgeSebelum from '~/assets/beforAfterImage/bridge_gigi_depan_befor.webp';
 import bridgeSetelah from '~/assets/beforAfterImage/bridge_gigi_depanAfter.webp';
@@ -12,7 +13,7 @@ import tambalResinSesudah from '~/assets/beforAfterImage/tambal_resin_komposit_s
 
 import TestimoniCard from '~/components/TestimoniCard.vue';
 
-const originalCases = [
+const cases = [
     {
         title: "Pemasangan Bridge Gigi Depan Permanen Payakumbuh",
         beforeImage: bridgeSebelum,
@@ -43,154 +44,129 @@ const originalCases = [
     },
 ];
 
-// Duplicate cases 3 times for infinite scroll loop [Set A, Set B, Set C]
-const displayCases = computed(() => [...originalCases, ...originalCases, ...originalCases]);
-
-// Track the currently displayed image
+// ─── Before/After toggle ────────────────────────────────────────────
 const showAfter = ref(false);
-const carouselContainer = ref(null);
-
-// Simpan intervalId agar bisa dibersihkan saat komponen di-unmount (mencegah memory leak)
 /** @type {ReturnType<typeof setInterval> | null} */
 let intervalId = null;
 
-// Change the image every 3 seconds
-onMounted(async () => {
+// ─── Embla refs ──────────────────────────────────────────────────────
+const emblaViewport = ref(null);
+/** @type {import('embla-carousel').EmblaCarouselType | null} */
+let embla = null;
+
+// ─── Slide count & active index ─────────────────────────────────────
+const selectedIndex = ref(0);
+const slideCount = computed(() => cases.length);
+
+// ─── Dot-indicator update ────────────────────────────────────────────
+const onSelect = () => {
+    if (!embla) return;
+    // Embla loop mode wraps around; selectedScrollSnap() always returns
+    // the real index (0 – slideCount-1) regardless of loop clones.
+    selectedIndex.value = embla.selectedScrollSnap();
+};
+
+// ─── Lifecycle ───────────────────────────────────────────────────────
+onMounted(() => {
+    // Before/after image toggle every 3 s
     intervalId = setInterval(() => {
         showAfter.value = !showAfter.value;
-    }, 3000); // Change every 3 seconds
+    }, 3000);
 
-    // Initialize scroll position to the Start of Middle Set (Set B)
-    await nextTick();
-    if (carouselContainer.value) {
-        // Calculate scroll width of one set
-        const oneSetWidth = carouselContainer.value.scrollWidth / 3;
-        carouselContainer.value.scrollLeft = oneSetWidth;
-    }
+    if (!emblaViewport.value) return;
+
+    embla = EmblaCarousel(emblaViewport.value, {
+        loop: true,           // Embla handles infinite loop natively — no manual cloning needed
+        align: 'start',
+        slidesToScroll: 1,
+        dragFree: false,      // Snap after every drag (prevents mid-card stops)
+        containScroll: false, // Required for loop to work correctly
+    });
+
+    embla.on('select', onSelect);
+    onSelect(); // Set initial state
 });
 
-// Bersihkan interval saat komponen di-unmount
 onUnmounted(() => {
     if (intervalId !== null) {
         clearInterval(intervalId);
         intervalId = null;
     }
+    embla?.destroy();
+    embla = null;
 });
 
-const handleScroll = () => {
-    if (!carouselContainer.value) return;
-
-    const container = carouselContainer.value;
-    const totalWidth = container.scrollWidth;
-    const oneSetWidth = totalWidth / 3;
-    const scrollLeft = container.scrollLeft;
-
-    // Check bounds (Aggressive reset to keep in Set B)
-    // Set B range: [oneSetWidth, 2*oneSetWidth]
-    
-    // If we are too far left (entering Set A) -> Jump forward to Set B relative position
-    if (scrollLeft < 50) { // Near absolute start (Set A start)
-         container.style.scrollBehavior = 'auto'; // Instant jump
-         container.scrollLeft += oneSetWidth;
-         container.style.scrollBehavior = ''; 
-    } 
-    // If we are too far right (entering Set C end) -> Jump back to Set B relative position
-    else if (scrollLeft > oneSetWidth * 2 + oneSetWidth / 2) { // Deep into Set C
-         container.style.scrollBehavior = 'auto'; // Instant jump
-         container.scrollLeft -= oneSetWidth;
-         container.style.scrollBehavior = '';
-    }
-    // Note: Intermediate checks can be added, but pre-jump in button is smoother
-};
-
-const scroll = (direction) => {
-  if (carouselContainer.value) {
-    const container = carouselContainer.value;
-    const scrollAmount = container.clientWidth / (window.innerWidth >= 1024 ? 3 : 1);
-    const oneSetWidth = container.scrollWidth / 3;
-    
-    // PRE-JUMP LOGIC: Ensure we are in a safe scrolling zone (Set B) BEFORE animating
-    container.style.scrollBehavior = 'auto';
-    
-    if (direction === 'left') {
-        // If we in Set A (Left of Set B), jump forward to Set B
-        if (container.scrollLeft < oneSetWidth) {
-             container.scrollLeft += oneSetWidth;
-        }
-    } else { // Right
-        // If we are in Set C (Right of Set B), jump backward to Set B
-        if (container.scrollLeft >= 2 * oneSetWidth) {
-             container.scrollLeft -= oneSetWidth;
-        }
-    }
-    
-    // Force layout update to ensure browser registers the jump
-    // (void container.offsetWidth) is a trick, but requestAnimationFrame or just proceeding works in most modern browsers
-    
-    container.style.scrollBehavior = ''; // Restore smooth
-
-    // Now Scroll
-    // Use requestAnimationFrame to let the "auto" jump resolve first if needed
-    requestAnimationFrame(() => {
-        container.scrollTo({
-        left: container.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount),
-        behavior: 'smooth'
-        });
-    });
-  }
-};
+// ─── Button navigation ───────────────────────────────────────────────
+const scrollPrev = () => embla?.scrollPrev();
+const scrollNext = () => embla?.scrollNext();
+const scrollTo  = (i) => embla?.scrollTo(i);
 </script>
+
 <template>
-  <section id="testimoni" class="py-20 px-6 bg-gray-100 overflow-hidden relative group">
-    <div class="mx-auto max-w-7xl relative">
+  <section id="testimoni" class="py-20 px-6 bg-gray-100 overflow-hidden relative">
+    <div class="mx-auto max-w-7xl">
+
+      <!-- Heading -->
       <div class="text-center mb-12">
         <h2 class="text-3xl md:text-4xl font-extrabold text-[#6E1A7E] mb-2">
-          Lihat Perubahannya <span class="text-[#6E1A7E]">(Before & After)</span>
+          Lihat Perubahannya <span class="text-[#6E1A7E]">(Before &amp; After)</span>
         </h2>
         <p class="text-xl text-[#6E1A7E]">
           Kami menciptakan senyum terbaik untuk setiap pasien.
         </p>
       </div>
 
-      <!-- Carousel Container -->
-      <div class="relative w-full"> 
-         <div 
-            ref="carouselContainer" 
-            @scroll="handleScroll"
-            class="carousel carousel-center w-full p-4 space-x-4 rounded-box overflow-x-auto scroll-smooth no-scrollbar"
-         >
+      <!-- Embla Carousel -->
+      <div class="relative w-full">
+
+        <!--
+          Trick standard Embla untuk outer spacing:
+          -mx-2 di viewport memperlebar area clip ke luar,
+          px-2 per slide menghasilkan gap simetris di semua sisi.
+          Hasilnya: 8px di kiri card pertama, 16px antar card, 8px di kanan card terakhir.
+        -->
+        <div ref="emblaViewport" class="overflow-hidden -mx-2">
+          <div class="flex">
             <div
-            v-for="(item, index) in displayCases"
-            :key="index"
-            class="carousel-item w-full md:w-1/2 lg:w-1/3 transition-transform duration-300"
+              v-for="(item, index) in cases"
+              :key="index"
+              class="flex-none w-full md:w-1/2 lg:w-1/3 px-2"
             >
               <TestimoniCard :item="item" :showAfter="showAfter" />
             </div>
+          </div>
         </div>
 
-        <!-- Global Navigation Buttons — hanya tampil di md ke atas -->
-        <button 
-            @click="scroll('left')" 
-            class="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 btn btn-circle btn-primary bg-[#6E1A7E] border-none text-white shadow-lg opacity-70 hover:opacity-100 z-10 -ml-5"
-            aria-label="Previous Slide">
-            ❮
-        </button>
-        <button 
-            @click="scroll('right')" 
-            class="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 btn btn-circle btn-primary bg-[#6E1A7E] border-none text-white shadow-lg opacity-70 hover:opacity-100 z-10 -mr-5"
-            aria-label="Next Slide">
-            ❯
-        </button>
+        <!-- Tombol navigasi — hanya tampil di md ke atas -->
+        <button
+          @click="scrollPrev"
+          class="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 btn btn-circle btn-primary bg-[#6E1A7E] border-none text-white shadow-lg opacity-70 hover:opacity-100 z-10 -ml-5"
+          aria-label="Slide Sebelumnya"
+        >❮</button>
+        <button
+          @click="scrollNext"
+          class="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 btn btn-circle btn-primary bg-[#6E1A7E] border-none text-white shadow-lg opacity-70 hover:opacity-100 z-10 -mr-5"
+          aria-label="Slide Berikutnya"
+        >❯</button>
+      </div>
 
-        <!-- Swipe hint — hanya tampil di mobile -->
-        <p class="md:hidden mt-3 text-center text-xs text-[#6E1A7E]/60 select-none" aria-hidden="true">
+      <!-- Dot indicator + swipe hint (mobile) -->
+      <div class="flex flex-col items-center gap-2 mt-4">
+        <div class="flex gap-2">
+          <button
+            v-for="(_, i) in slideCount"
+            :key="i"
+            @click="scrollTo(i)"
+            class="w-2.5 h-2.5 rounded-full transition-all duration-300"
+            :class="selectedIndex === i ? 'bg-[#6E1A7E] scale-125' : 'bg-[#6E1A7E]/30'"
+            :aria-label="`Ke slide ${i + 1}`"
+          />
+        </div>
+        <p class="md:hidden text-xs text-[#6E1A7E]/60 select-none" aria-hidden="true">
           ← Geser untuk melihat lebih →
         </p>
       </div>
-      
-
 
     </div>
   </section>
 </template>
-

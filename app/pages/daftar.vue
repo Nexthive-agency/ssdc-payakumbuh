@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRoute, useHead } from '#imports'
-import logo from '~/assets/img/logo.png'
 
 useHead({
   title: 'Daftar Konsultasi – SSDC Senyum Sehat Dental Care Payakumbuh',
@@ -126,14 +125,8 @@ function handleSubmit() {
   >
     <div class="w-full max-w-lg">
 
-      <!-- Logo + judul -->
+      <!-- Judul -->
       <div class="flex flex-col items-center mb-8 text-center">
-        <img
-          :src="logo"
-          alt="Logo SSDC Senyum Sehat Dental Care Payakumbuh"
-          class="w-[180px] h-auto object-contain mb-4"
-          loading="eager"
-        />
         <h1 id="heading-daftar" class="text-2xl md:text-3xl font-extrabold text-[#6E1A7E] leading-tight">
           Daftar Konsultasi Gratis
         </h1>

@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
-const hideAnchors = computed(() => route.path.startsWith('/products'))
+const hideAnchors = computed(() => route.path.startsWith('/products') || route.path.startsWith('/daftar'))
 
 // Mobile menu state
 const menuOpen = ref(false)
