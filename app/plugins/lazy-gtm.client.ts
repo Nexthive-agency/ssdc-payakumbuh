@@ -15,9 +15,6 @@
  * ─────────────────────────────────────────────────────────────────────────────
  */
 export default defineNuxtPlugin(() => {
-  // Pastikan hanya jalan di client-side
-  if (import.meta.server) return;
-
   const GTM_ID = 'AW-16520213356';
   let isLoaded = false;
 

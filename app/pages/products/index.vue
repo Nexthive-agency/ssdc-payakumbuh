@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter, useHead } from '#imports'
 
 import { useProducts, type Product } from '~/composables/useProducts'
@@ -13,29 +13,29 @@ const route = useRoute()
 // Query-bound filter states
 const categories = [
   'All',
-  'scaling',
-  'fillings',
-  'root-canal',
-  'extraction',
-  'aesthetic',
-  'whitening',
-  'orthodontics',
-  'crown',
-  'xrays',
+  'pembersihan',
+  'tambal-gigi',
+  'saluran-akar',
+  'pencabutan',
+  'estetika',
+  'pemutihan',
+  'ortodonti',
+  'mahkota',
+  'rontgen',
 ] as const
 
 /** Label kategori dalam Bahasa Indonesia untuk ditampilkan di tombol filter */
 const categoryLabels: Record<string, string> = {
   'All':          'Semua',
-  'scaling':      'Scaling',
-  'fillings':     'Tambal Gigi',
-  'root-canal':   'Saluran Akar',
-  'extraction':   'Pencabutan',
-  'aesthetic':    'Estetika',
-  'whitening':    'Bleaching',
-  'orthodontics': 'Ortodonti',
-  'crown':        'Crown & Gigi Palsu',
-  'xrays':        'Rontgen',
+  'pembersihan':  'Scaling',
+  'tambal-gigi':  'Tambal Gigi',
+  'saluran-akar': 'Saluran Akar',
+  'pencabutan':   'Pencabutan',
+  'estetika':     'Estetika',
+  'pemutihan':    'Bleaching',
+  'ortodonti':    'Ortodonti',
+  'mahkota':      'Crown & Gigi Palsu',
+  'rontgen':      'Rontgen',
 }
 const q = ref<string>((route.query.q as string) || '')
 const category = ref<string>((route.query.cat as string) || 'All')
@@ -153,6 +153,11 @@ onMounted(() => {
   if (window.matchMedia('(min-width: 1024px)').matches) {
     searchEl.value?.focus()
   }
+})
+
+onUnmounted(() => {
+  // Cleanup debounce timer agar tidak fire setelah komponen di-destroy
+  if (debounceId) clearTimeout(debounceId)
 })
 </script>
 

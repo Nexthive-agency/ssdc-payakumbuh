@@ -39,15 +39,15 @@ export type Product = {
   priceMax?: number
   rating: number
   category:
-    | 'scaling'
-    | 'fillings'
-    | 'root-canal'
-    | 'xrays'
-    | 'extraction'
-    | 'aesthetic'
-    | 'whitening'
-    | 'orthodontics'
-    | 'crown'
+    | 'pembersihan'
+    | 'tambal-gigi'
+    | 'saluran-akar'
+    | 'rontgen'
+    | 'pencabutan'
+    | 'estetika'
+    | 'pemutihan'
+    | 'ortodonti'
+    | 'mahkota'
   /** Path ke gambar di /public/ — contoh: '/img/products/karang_gigi/1.png' */
   image: string
   tags?: string[]
@@ -74,7 +74,7 @@ const _products = ref<Product[]>([
     price: 250000,
     priceMax: 350000,
     rating: 4.7,
-    category: 'scaling',
+    category: 'pembersihan',
     image: '/img/products/karang_gigi/1.png',
     tags: ['Scaling', 'Karang Gigi'],
     isBest: true,
@@ -93,7 +93,7 @@ const _products = ref<Product[]>([
     slug: 'tambal-gigi-rk',
     price: 300000,
     rating: 4.5,
-    category: 'fillings',
+    category: 'tambal-gigi',
     image: '/img/products/tambal_gigi_rk/1.png',
     tags: ['Tambalan Gigi', 'Resin Komposit'],
     description:
@@ -110,38 +110,37 @@ const _products = ref<Product[]>([
     id: 3,
     name: 'Tambal Gigi GIC',
     slug: 'tambal-gigi-gic',
-    price: 200000,
+    price: 100000,
+    priceMax: 200000,
     rating: 4.6,
-    category: 'fillings',
+    category: 'tambal-gigi',
     image: '/img/products/tambal_gigi_gic/1.png',
-    tags: ['Tambalan Gigi', 'Glass Ionomer'],
+    tags: ['Tambalan Gigi', 'Glass Ionomer', 'Pulp Capping', 'Cariesstop'],
     description:
-      'Tambal Gigi GIC (Glass Ionomer Cement) — pilihan ideal untuk tambalan kecil atau gigi anak. Material ini melepaskan Fluoride secara perlahan untuk perlindungan ekstra. Prosedur cepat dengan harga sangat terjangkau.',
+      'Tambal Gigi GIC (Glass Ionomer Cement) — pilihan ideal untuk tambalan kecil atau gigi anak karena melepaskan Fluoride secara perlahan untuk perlindungan ekstra. Tersedia juga tindakan Pulp Capping dan Cariesstop untuk melindungi pulpa gigi pada kasus karies dalam sebelum ditambal, mencegah perlunya perawatan saluran akar.',
     specs: {
-      Harga: 'Rp 200.000',
       Material: 'Glass Ionomer Cement',
-      Keterangan: 'Harga bisa berubah sesuai kondisi gigi',
+      Keterangan: 'Harga tergantung tindakan yang diperlukan',
     },
+    subServices: [
+      {
+        label: 'Tambal Gigi GIC',
+        detail: 'Tambalan Glass Ionomer Cement standar',
+        price: 200000,
+      },
+      {
+        label: 'Pulp Capping',
+        detail: 'Perlindungan pulpa pada karies dalam',
+        price: 100000,
+      },
+      {
+        label: 'Cariesstop',
+        detail: 'Penghentian klinis perkembangan karies',
+        price: 100000,
+      },
+    ],
   },
 
-  // ── 4. Pulp Capping / Cariesstop ──────────────────────────────────────────
-  {
-    id: 4,
-    name: 'Pulp Capping / Cariesstop',
-    slug: 'pulp-capping',
-    price: 100000,
-    rating: 4.5,
-    category: 'fillings',
-    image: '/img/products/tambal_gigi_gic/1.png', // placeholder — belum ada foto khusus
-    tags: ['Perawatan Pulpa', 'Pencegahan Karies'],
-    isNew: true,
-    description:
-      'Pulp Capping adalah tindakan perlindungan pulpa gigi agar tidak perlu dirawat saluran akar (PSA). Cariesstop menghentikan perkembangan karies secara klinis. Tindakan preventif ini jauh lebih hemat dibanding harus menjalani PSA penuh.',
-    specs: {
-      Harga: 'Rp 100.000',
-      Indikasi: 'Perlindungan pulpa / penghentian karies',
-    },
-  },
 
   // ── 5. Perawatan Saluran Akar ──────────────────────────────────────────────
   {
@@ -151,7 +150,7 @@ const _products = ref<Product[]>([
     price: 150000,
     priceMax: 1000000,
     rating: 4.8,
-    category: 'root-canal',
+    category: 'saluran-akar',
     image: '/img/products/perawatan_akar_after_rontgen/1.png',
     tags: ['Saluran Akar', 'PSA'],
     isBest: true,
@@ -187,7 +186,7 @@ const _products = ref<Product[]>([
     slug: 'rontgen-periapikal',
     price: 100000,
     rating: 4.3,
-    category: 'xrays',
+    category: 'rontgen',
     image: '/img/products/rontgen_periapikal/1.png',
     tags: ['Rontgen', 'Diagnosa Gigi'],
     description:
@@ -206,7 +205,7 @@ const _products = ref<Product[]>([
     price: 200000,
     priceMax: 2000000,
     rating: 4.6,
-    category: 'extraction',
+    category: 'pencabutan',
     image: '/img/products/cabut_dewasa/1.jpeg',
     tags: ['Cabut Gigi', 'Bedah Gigi'],
     description:
@@ -246,7 +245,7 @@ const _products = ref<Product[]>([
     slug: 'cabut-gigi-anak',
     price: 150000,
     rating: 4.4,
-    category: 'extraction',
+    category: 'pencabutan',
     image: '/img/products/cabut_anak/1.jpg',
     tags: ['Cabut Gigi', 'Perawatan Anak'],
     description:
@@ -264,7 +263,7 @@ const _products = ref<Product[]>([
     slug: 'veneers-direct',
     price: 500000,
     rating: 4.7,
-    category: 'aesthetic',
+    category: 'estetika',
     image: '/img/products/veneer_direct_diastema_closure/1.jpeg',
     tags: ['Veneer', 'Estetika Gigi'],
     isBest: true,
@@ -284,7 +283,7 @@ const _products = ref<Product[]>([
     slug: 'veneers-indirect',
     price: 3000000,
     rating: 4.7,
-    category: 'aesthetic',
+    category: 'estetika',
     image: '/img/products/veener_indirect/1.png',
     tags: ['Veneer', 'Estetika Gigi', 'Porselen'],
     isBest: true,
@@ -304,7 +303,7 @@ const _products = ref<Product[]>([
     slug: 'bleaching-gigi',
     price: 2000000,
     rating: 4.7,
-    category: 'whitening',
+    category: 'pemutihan',
     image: '/img/products/bleaching_gigi/1.png',
     tags: ['Whitening', 'Pemutihan Gigi'],
     isBest: true,
@@ -325,7 +324,7 @@ const _products = ref<Product[]>([
     price: 3500000,
     priceMax: 5000000,
     rating: 4.5,
-    category: 'orthodontics',
+    category: 'ortodonti',
     image: '/img/products/behel_metal/1.png',
     tags: ['Behel', 'Kawat Gigi'],
     description:
@@ -360,7 +359,7 @@ const _products = ref<Product[]>([
     slug: 'behel-ceramic',
     price: 6000000,
     rating: 4.9,
-    category: 'orthodontics',
+    category: 'ortodonti',
     image: '/img/products/behel_cramic/1.png',
     tags: ['Behel', 'Kawat Gigi', 'Estetika'],
     isBest: true,
@@ -381,7 +380,7 @@ const _products = ref<Product[]>([
     price: 12000000,
     priceMax: 18000000,
     rating: 4.9,
-    category: 'orthodontics',
+    category: 'ortodonti',
     image: '/img/products/aligner/1.png',
     tags: ['Aligner', 'Ortodonti Modern'],
     isBest: true,
@@ -412,7 +411,7 @@ const _products = ref<Product[]>([
     slug: 'behel-lepasan-anak',
     price: 1000000,
     rating: 4.9,
-    category: 'orthodontics',
+    category: 'ortodonti',
     image: '/img/products/behel_lepasan_anak/1.png',
     tags: ['Behel Anak', 'Ortodonti Preventif'],
     isBest: true,
@@ -431,7 +430,7 @@ const _products = ref<Product[]>([
     slug: 'retainer-vacuum',
     price: 500000,
     rating: 4.9,
-    category: 'orthodontics',
+    category: 'ortodonti',
     image: '/img/products/retainer_vacum/1.png',
     tags: ['Retainer', 'Pasca Behel'],
     isBest: true,
@@ -451,7 +450,7 @@ const _products = ref<Product[]>([
     price: 50000,
     priceMax: 200000,
     rating: 4.9,
-    category: 'orthodontics',
+    category: 'ortodonti',
     image: '/img/products/kontrol_behel/1.png',
     tags: ['Kontrol Behel', 'Perawatan Rutin'],
     isBest: true,
@@ -522,7 +521,7 @@ const _products = ref<Product[]>([
     price: 150000,
     priceMax: 1800000,
     rating: 4.6,
-    category: 'crown',
+    category: 'mahkota',
     image: '/img/products/gigi_palsu_penuh_ra_rb/1.jpeg',
     tags: ['Gigi Palsu', 'Prostodontik'],
     isBest: true,
@@ -563,7 +562,7 @@ const _products = ref<Product[]>([
     price: 1500000,
     priceMax: 3500000,
     rating: 4.7,
-    category: 'crown',
+    category: 'mahkota',
     image: '/img/products/crown_gigi/crown_belakang/1.jpeg',
     tags: ['Crown', 'Restorasi Gigi'],
     description:

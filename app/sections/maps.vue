@@ -90,8 +90,8 @@ import maskot2 from "~/assets/img/webp/maskot2.webp";
               <img
                 :src="qrcode"
                 alt="QR code menuju halaman ulasan Google SSDC Payakumbuh"
-                width={200}
-                height={200}
+                width="200"
+                height="200"
                 loading="lazy"
                 class="w-[200px] h-auto object-contain drop-shadow-lg"
               />
@@ -106,20 +106,20 @@ import maskot2 from "~/assets/img/webp/maskot2.webp";
                 </a>
               </div>
             </div>
-            <div class="absolute -bottom-2/12 hidden -left-1 -translate-x-1/2 lg:flex items-end justify-center z-0">
+            <div class="absolute bottom-0 hidden -left-1 -translate-x-1/2 lg:flex items-end justify-center z-0">
               <img
                 :src="maskot1"
                 alt="Maskot Dokter Gigi Senyum Sehat Dental Care Payakumbuh"
-                width={180}
-                height={250}
+                width="180"
+                height="250"
                 loading="lazy"
                 class="object-contain w-[180px] sm:w-[200px] md:w-[150px]"
               />
               <img
                 :src="maskot2"
                 alt="Maskot Pasien Senang SSDC Dental Care"
-                width={180}
-                height={250}
+                width="180"
+                height="250"
                 loading="lazy"
                 class="object-contain w-[180px] sm:w-[200px] md:w-[150px]"
               />

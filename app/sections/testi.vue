@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import EmblaCarousel from 'embla-carousel';
 
 import bridgeSebelum from '~/assets/beforAfterImage/bridge_gigi_depan_befor.webp';
@@ -56,7 +56,7 @@ let embla = null;
 
 // ─── Slide count & active index ─────────────────────────────────────
 const selectedIndex = ref(0);
-const slideCount = computed(() => cases.length);
+const slideCount = cases.length;
 
 // ─── Dot-indicator update ────────────────────────────────────────────
 const onSelect = () => {
