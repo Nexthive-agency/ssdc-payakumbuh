@@ -143,6 +143,8 @@ const paginated = computed(() => {
 function goPage(p: number) {
   page.value = Math.min(Math.max(1, p), totalPages.value)
   syncQuery()
+  // Scroll ke atas setelah ganti halaman agar user mulai dari product pertama
+  window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 // Optional: focus search on mount for desktop
