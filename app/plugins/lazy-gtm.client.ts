@@ -1,13 +1,19 @@
 /**
  * lazy-gtm.client.ts
  * ─────────────────────────────────────────────────────────────────────────────
- * Load Google Tag Manager SETELAH user pertama kali berinteraksi dengan halaman.
- * Ini menghilangkan GTM dari critical path render → TBT turun drastis di mobile.
+ * Lazy-inject script Google Tag Manager (gtag/js) setelah user berinteraksi.
+ * Ini menghilangkan script berat GTM dari critical path render → TBT turun.
+ *
+ * ARSITEKTUR (2 lapis):
+ * 1. nuxt.config.ts  → inline script ringan di <head>: inisiasi dataLayer + gtag()
+ *    Tujuan: agar Google Ads verification crawler bisa mendeteksi tag dari HTML statis.
+ * 2. Plugin ini       → lazy-inject <script src="gtag/js"> setelah interaksi user
+ *    Tujuan: agar script berat tidak blokir LCP/TBT di mobile.
  *
  * Strategi:
- * 1. Tidak load GTM saat halaman pertama kali dibuka (tidak blokir LCP/TBT)
- * 2. Load GTM saat user pertama kali: scroll, click, keydown, atau touchstart
- * 3. Fallback: load setelah 4 detik meski tidak ada interaksi (pastikan tracking tetap jalan)
+ * 1. Tidak load gtag/js saat halaman pertama kali dibuka (tidak blokir LCP/TBT)
+ * 2. Load saat user pertama kali: scroll, click, keydown, atau touchstart
+ * 3. Fallback: load setelah 4 detik meski tidak ada interaksi
  *
  * Trade-off yang diterima:
  * - Conversion tracking mungkin miss untuk user yang menutup tab < 4 detik tanpa interaksi
@@ -26,14 +32,9 @@ export default defineNuxtPlugin(() => {
     const events = ['click', 'touchstart', 'keydown', 'scroll', 'mousemove'];
     events.forEach(e => window.removeEventListener(e, loadGTM));
 
-    // Inisiasi dataLayer
-    (window as any).dataLayer = (window as any).dataLayer || [];
-    function gtag(...args: any[]) { (window as any).dataLayer.push(args); }
-    (window as any).gtag = gtag;
-    gtag('js', new Date());
-    gtag('config', GTM_ID, { send_page_view: true });
-
-    // Inject script GTM ke <head>
+    // dataLayer & gtag sudah diinisiasi dari inline script di <head> (nuxt.config.ts).
+    // Plugin ini hanya bertugas lazy-inject script GTM yang berat agar tidak
+    // blokir LCP/TBT. Tidak perlu reinisiasi dataLayer/gtag di sini.
     const script = document.createElement('script');
     script.async = true;
     script.src = `https://www.googletagmanager.com/gtag/js?id=${GTM_ID}`;

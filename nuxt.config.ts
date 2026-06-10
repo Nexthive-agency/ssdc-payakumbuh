@@ -137,8 +137,15 @@ export default defineNuxtConfig({
         { rel: "canonical", href: "https://ssdc.my.id/" },
       ],
       script: [
-        // GTM diload via lazy-gtm.client.ts plugin setelah user interaksi
-        // (tidak diload di sini agar tidak blokir LCP/TBT di mobile)
+        // ─── Google tag: Inline init ─────────────────────────────────────────
+        // WAJIB ada di <head> HTML agar Google Ads verification crawler bisa
+        // mendeteksi tag dari source HTML statis (crawler tidak trigger interaksi).
+        // Script berat (gtag/js) tetap lazy-load via lazy-gtm.client.ts plugin.
+        {
+          innerHTML: `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-16520213356');`,
+          type: 'text/javascript',
+          tagPosition: 'head',
+        },
         {
           type: "application/ld+json",
           innerHTML: JSON.stringify({
